@@ -1,2 +1,2 @@
 # 24287_WOW_LSP_GOLANG
-# Test Update Process (mazzinid)
+# Test2 Update Process (mazzinid)
