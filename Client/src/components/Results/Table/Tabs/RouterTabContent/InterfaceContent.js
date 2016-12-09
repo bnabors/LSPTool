@@ -107,15 +107,15 @@ export default class InterfaceContent extends React.Component {
 
     updateTable(state) {
         /*
-        let element = ReactDOM.findDOMNode(this.refs.tbl);
-        if (element) {
-            if (state === true) {
-                element.setAttribute("errorsOnly", "");
-            } else {
-                element.removeAttribute("errorsOnly");
-            }
-        }
-        */
+         let element = ReactDOM.findDOMNode(this.refs.tbl);
+         if (element) {
+         if (state === true) {
+         element.setAttribute("errorsOnly", "");
+         } else {
+         element.removeAttribute("errorsOnly");
+         }
+         }
+         */
     }
 
     refresh() {
@@ -174,7 +174,7 @@ export default class InterfaceContent extends React.Component {
 
             for (let i = 0; i < this.props.data.statistics.length; i++) {
                 stats.push(<StatisticsTable data={this.props.data.statistics[i]} errorsOnly={this.state.errorsOnly}/>);
-                if (i + 1 < this.props.data.statistics.length-1) {
+                if (i + 1 < this.props.data.statistics.length - 1) {
                     let className = this.findError(this.props.data.statistics[i]) ? "error" : "no-error";
                     stats.push(
                         <tbody className={className}>
@@ -211,26 +211,38 @@ export default class InterfaceContent extends React.Component {
         return (
             <div className={className}>
                 <div className="stat-header">
-                    <div className="plus-minus-button"><SwitchButton isSwitch={this.state.expanded}
-                                                                     onClick={this.openCloseStats.bind(this)}/></div>
+                    <div className="plus-minus-button">
+                        <SwitchButton isSwitch={this.state.expanded}
+                                      onClick={this.openCloseStats.bind(this)}/>
+                    </div>
                     <div className={this.props.data.isError ? "error" : "no-error"}>
-                        <div className={this.props.data.isError ? "name-wrap error" : "name-wrap no-error"}>{this.props.data.name}</div>
+                        <div
+                            className={this.props.data.isError ? "name-wrap error" : "name-wrap no-error"}>{this.props.data.name}</div>
                     </div>
                     <div className="router-result-buttons">
-                        <div><a className={this.state.errorsOnly ? "selected switch-btn" : "switch-btn"}
-                                id={this.props.data.id}
-                                onClick={this.filterFailed.bind(this)}>Failed</a></div>
-                        <div><a className={this.state.errorsOnly ? "switch-btn" : "selected switch-btn"}
-                                id={this.props.data.id}
-                                onClick={this.filterAll.bind(this)}>All</a></div>
-                        <div className="space50"/>
-                        <div><a id={this.props.data.id} onClick={this.refresh.bind(this)}>Refresh</a></div>
-                        <div><a id={this.props.data.id} onClick={this.clearRefresh.bind(this)}>Clear/Refresh</a></div>
+                        <div>
+                            <a className={this.state.errorsOnly ? "selected switch-btn" : "switch-btn"}
+                               id={this.props.data.id}
+                               onClick={this.filterFailed.bind(this)}>Failed</a>
+                        </div>
+                        <div>
+                            <a className={this.state.errorsOnly ? "switch-btn" : "selected switch-btn"}
+                               id={this.props.data.id}
+                               onClick={this.filterAll.bind(this)}>All</a>
+                        </div>
+                        <div className="space30"/>
+                        <div>
+                            <a id={this.props.data.id} onClick={this.refresh.bind(this)}>Refresh</a>
+                        </div>
+                        <div>
+                            <a id={this.props.data.id} onClick={this.clearRefresh.bind(this)}>Clear/Refresh</a>
+                        </div>
                     </div>
                 </div>
                 <div ref="content" className={this.state.expanded ? "stat-content expanded" : "stat-content hidden"}>
                     <div className="stat-content-table">
-                        <table className={"router-result-stats-table" + (this.state.errorsOnly ? " errorsOnly" : "")} ref="tbl">
+                        <table className={"router-result-stats-table" + (this.state.errorsOnly ? " errorsOnly" : "")}
+                               ref="tbl">
                             {stats}
                         </table>
                     </div>

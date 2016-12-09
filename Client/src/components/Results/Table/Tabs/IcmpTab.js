@@ -26,7 +26,7 @@ export default class IcmpTab extends BaseTab {
     render() {
         return (
             <div id={this.props.data.id} className="tabcontent">
-                <div className={"result-tab-header" + (this.props.data.isError ? " error" : "")}>ICMP</div>
+                <div className="result-tab-header">ICMP</div>
                 <div className="icmp-tab">
                     <IcmpTable data={this.props.data} onRefreshPing={this.refreshRow.bind(this)}
                                onRefreshPings={this.refreshAll.bind(this)}/>

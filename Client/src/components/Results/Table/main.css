@@ -8,7 +8,7 @@
 .tabcontent {
     display: block;
     max-height: 100%;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
     height: 100%;
 }
 
@@ -176,6 +176,7 @@ th.router-result-buttons {
 
 div.router-result-buttons {
     float: right;
+    padding-left: 0 !important;
 }
 
 div.router-result-buttons div {
@@ -298,7 +299,7 @@ table.table-content tbody tr td button {
 
 table.table-content tbody tr td div {
     display: inline-block;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
 }
 
 div.stat-table-header {
@@ -409,12 +410,13 @@ div.stat-content-table {
 div.stat-content-table table *{
     font-size: 12px;
 }
-div.space50{
-    width: 50px;
+div.space30{
+    width: 30px;
 }
 
 div.large-loader {
-    position: absolute;
+    /*position: absolute;*/
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
