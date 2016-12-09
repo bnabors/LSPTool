@@ -10,8 +10,8 @@ package sessions
 import (
 	"github.com/Juniper/go-netconf/netconf"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
 type SessionsManager struct {

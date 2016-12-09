@@ -8,8 +8,8 @@
 package controller
 
 import (
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/controllers/helpers"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/controllers/helpers"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
 )
 
 func RunTests(o models.TestOptions) (*models.TestResults, error) {

@@ -16,9 +16,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/config"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
 
 	"errors"
 

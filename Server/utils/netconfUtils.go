@@ -10,7 +10,7 @@ package utils
 import (
 	"time"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/config"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
 	"github.com/Juniper/go-netconf/netconf"
 )
 

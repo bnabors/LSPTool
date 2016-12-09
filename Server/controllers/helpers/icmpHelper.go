@@ -8,8 +8,8 @@
 package controllerHelper
 
 import (
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/commands"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/commands"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
 )
 
 // BuildIcmpResult make icmp result between two routers

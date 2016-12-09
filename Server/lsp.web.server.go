@@ -18,10 +18,10 @@ import (
 
 	"sync"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/controllers"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/controllers"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
 var (

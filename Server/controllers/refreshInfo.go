@@ -13,11 +13,11 @@ import (
 
 	"errors"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/commands"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/controllers/helpers"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/sessions"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/commands"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/controllers/helpers"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
 // RefreshInterfaceInfo - get updated interface information

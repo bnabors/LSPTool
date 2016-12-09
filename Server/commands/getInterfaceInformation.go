@@ -12,10 +12,10 @@ import (
 
 	"strings"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/sessions"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
 const (
