@@ -10,8 +10,8 @@ package command
 import (
 	"fmt"
 
-	"../log"
-	"../utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
 )
 
 // ClearInterfacesStatistics очищает статистику интерфеса interfaceName, для роутера по адресу address

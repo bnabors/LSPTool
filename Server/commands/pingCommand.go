@@ -10,10 +10,10 @@ package command
 import (
 	"fmt"
 
-	"../config"
-	"../log"
-	"../models"
-	"../utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/config"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
 )
 
 // Ping - пингует заданный адрес

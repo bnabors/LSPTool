@@ -12,10 +12,10 @@ import (
 	"strconv"
 	"strings"
 
-	"../../commands"
-	"../../models"
-	"../../sessions"
-	"../../utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/commands"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/sessions"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
 )
 
 type TestResultBuilder struct {

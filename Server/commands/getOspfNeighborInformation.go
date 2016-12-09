@@ -8,10 +8,10 @@
 package command
 
 import (
-	"../log"
-	"../models"
-	"../sessions"
-	"../utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/sessions"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
 )
 
 func GetOspfNeighbor(sm *sessions.SessionsManager, address string, interfaceName string) (*models.OspfNeighbor, error) {

@@ -8,9 +8,9 @@
 package command
 
 import (
-	"../log"
-	"../models"
-	"../utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
 )
 
 func LoadMplsLspInfo(ingressAddress string, egressAddress string) ([]models.MplsLsp, error) {

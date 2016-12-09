@@ -8,7 +8,7 @@
 package models
 
 import (
-	"../config"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/config"
 )
 
 /* Main page */

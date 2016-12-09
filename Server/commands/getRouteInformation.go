@@ -10,10 +10,10 @@ package command
 import (
 	"fmt"
 
-	"../log"
-	"../models"
-	"../sessions"
-	"../utils"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/sessions"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/utils"
 )
 
 func LoadRouteInfo(sm *sessions.SessionsManager, address string, destination string, table string) (models.RouteInformation, error) {

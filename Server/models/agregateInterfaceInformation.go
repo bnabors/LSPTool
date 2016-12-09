@@ -12,7 +12,7 @@ import (
 
 	"strings"
 
-	"../log"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/log"
 )
 
 type (

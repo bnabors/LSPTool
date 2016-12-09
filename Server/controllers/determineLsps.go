@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"strings"
 
-	"../commands"
-	"../models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/commands"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/models"
 )
 
 func DetermineLsps(o models.DetermineOptions) (models.LspCollection, error) {
