@@ -1,0 +1,220 @@
+#app-main {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.app-header {
+    background-color: #3E3E3E;
+    display: block;
+    width: 100%;
+    height: 54px;
+    /* position: fixed; */
+}
+
+.app-header div {
+    padding: 10px;
+    color: #767676;
+    font-size: 30px;
+    display: block;
+    position: relative;
+}
+
+.app-body {
+    background-color: #E3E3E3;
+    position: absolute;
+    display: block;
+    top: 54px;
+    left: 0;
+    bottom: 0;
+    max-height: 100%;
+    width: 100%;
+    /* min-height: 550px; */
+    /* position: relative; */
+}
+
+.app-result {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.app-panel {
+    background-color: #F5F5F3;
+    /* width: 279px; */
+    display: inline-block;
+    height: 100%;
+    position: relative;
+    /* border-right: 1px solid red; */
+    float: left;
+    /* padding-right: 1px; */
+    /* min-width: 170px; */
+    width: 20%;
+    /* margin-right: -2px; */
+    /* margin-left: 0px; */
+    /* padding-left: 1px; */
+}
+
+.app-main-panel {
+    width: 16%;
+}
+
+.app-main-content {
+    width: 84%;
+}
+
+.app-inner-panel{
+    width: 20%;
+}
+
+.app-div {
+    height: 100%;
+}
+
+.separator {
+    height: 1px !important;;
+    margin: 0 -5px 0 -5px !important;
+    padding: 0 !important;;
+    display: block;
+    position: inherit;
+    background: #E3E3E3;
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 235px;
+    width: 100%;
+}
+
+.container-ex {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 88px;
+    width: inherit;
+    width: 100%;
+}
+
+.scrollable {
+    overflow-y: auto;
+    height: 100%;
+    min-height: 100px;
+    margin: 16px 0 16px 0;
+    -webkit-overflow-scrolling : touch !important;
+}
+
+.footer {
+
+}
+
+div.right-border{
+    content: none;
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background-color: #E3E3E3;
+    right: 0px;
+}
+
+div.footer div {
+    display: block;
+    margin: 10px;
+}
+
+div.footer div button {
+    display: block;
+    width: 100%;
+    text-overflow: ellipsis;      /* Required for text-overflow to do anything */
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+div.app-result-lsp {
+    display: inline-block;
+    height: 100%;
+    /* margin-left: 279px; */
+    /* min-width: 400px; */
+    float: left;
+    position: relative;
+    width: 84%;
+    /* min-width: 445px; */
+}
+
+div.routers-header {
+    font-size: 18px;
+    padding: 2px 10px 10px 10px;
+}
+
+button {
+    font-size: 15px;
+    padding: 5px 10px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 2px;
+    cursor: pointer;
+
+    outline : none;
+    -moz-outline : none;
+}
+button:hover{
+    background-color: #D2D2D2;
+    background-image: none;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#D2D2D2));
+    background-image: -webkit-linear-gradient(top, #F0F0F0, #D2D2D2);
+    background-image: -moz-linear-gradient(top, #F0F0F0, #D2D2D2);
+    background-image: -o-linear-gradient(top, #F0F0F0, #D2D2D2);
+    background-image: linear-gradient(to bottom, #F0F0F0, #D2D2D2);
+}
+button[disabled]{
+    margin-top: -1px;
+    opacity: 0.3;
+    border-radius: 2px;
+    border: solid 1px #1b1b1b;
+    background-color: #F5F5F3;
+    background-image: none;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#F5F5F3), to(#F5F5F3));
+    background-image: -webkit-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: -moz-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: -o-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: linear-gradient(to bottom, #F5F5F3, #F5F5F3);
+    cursor: default;
+}
+button[disabled]:hover{
+    background-color: #F5F5F3;
+    background-image: none;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#F5F5F3), to(#F5F5F3));
+    background-image: -webkit-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: -moz-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: -o-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: linear-gradient(to bottom, #F5F5F3, #F5F5F3);
+}
+
+.app-control-gradient{
+    border: none;
+
+    background-color: #FEFEFE;
+    background-image: none;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#FEFEFE), to(#F2F2F2));
+    background-image: -webkit-linear-gradient(top, #FEFEFE, #F2F2F2);
+    background-image: -moz-linear-gradient(top, #FEFEFE, #F2F2F2);
+    background-image: -o-linear-gradient(top, #FEFEFE, #F2F2F2);
+    background-image: linear-gradient(to bottom, #FEFEFE, #F2F2F2);
+
+    -webkit-box-shadow: 0 1px 1px 1px #D3D3D2;
+    -moz-box-shadow: 0 1px 1px 1px #D3D3D2;
+    box-shadow: 0 1px 1px 1px #D3D3D2;
+    /*-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#D3D3D2')";*/
+    /*filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#D3D3D2');*/
+}
+
+.text-overflow{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

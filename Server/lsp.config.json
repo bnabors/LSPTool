@@ -1,0 +1,16 @@
+{
+    "user": "lab",
+    "password": "lab123",
+    "serverIp": "localhost",
+    "serverPort": 9002,
+    "connectionCount": 10,
+    "mysqlConnectionsString" : "root:Qwerty123!@tcp(1492vrsql.bell-main.bellintegrator.ru:3306)/wow_test",
+    "mysqlRouterQuery": "select id, name, ip4, puttyIp4 from router",
+    "isDebug": true,
+    "logLevel": "info",
+    "logFile": "service.log",
+    "ingressRouterNames": ["CORJ","EDGJ","AGRJ","BBRJ"],
+    "egressRouterNames": ["CORJ","EDGJ","AGRJ","BBRJ","BARL"],
+    "sshConnectionTimout": 60,
+	"pingCount": 3
+}

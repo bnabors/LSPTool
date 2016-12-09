@@ -1,0 +1,108 @@
+/* Copyright 2016 Juniper Networks, Inc. All rights reserved.
+ * Licensed under the Juniper Networks Script Software License (the "License").
+ * You may not use this script file except in compliance with the License, which is located at
+ * http://www.juniper.net/support/legal/scriptlicense/
+ * Unless required by applicable law or otherwise agreed to in writing by the parties, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ */
+
+.custom-select{
+    margin: 0 !important;
+    position: relative;
+    display: inline-block !important;
+    width: 100% !important;
+}
+.custom-select select,label{
+}
+
+.custom-select select {
+    width: 100%;
+    padding: 5px 10px;
+    -webkit-appearance: button;
+    -webkit-border-radius: 2px;
+    -webkit-padding-end: 25px;
+    -webkit-padding-start: 10px;
+    -webkit-user-select: none;
+    border-radius: 2px;
+    outline : none;
+    -moz-outline : none;
+    border: none;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#FEFEFE), to(#F2F2F2));
+    background-image: -webkit-linear-gradient(top, #FEFEFE, #F2F2F2);
+    background-image: -moz-linear-gradient(top, #FEFEFE, #F2F2F2);
+    background-image: -o-linear-gradient(top, #FEFEFE, #F2F2F2);
+    background-image: linear-gradient(to bottom, #FEFEFE, #F2F2F2);
+    -webkit-box-shadow: 0 1px 1px 1px #D3D3D2;
+    -moz-box-shadow: 0 1px 1px 1px #D3D3D2;
+    box-shadow: 0 1px 1px 1px #D3D3D2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* width: 300px; */
+    -moz-appearance:none;
+}
+
+.custom-select select:hover{
+    background-color: #D2D2D2;
+    background-image: none;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#D2D2D2));
+    background-image: -webkit-linear-gradient(top, #F0F0F0, #D2D2D2);
+    background-image: -moz-linear-gradient(top, #F0F0F0, #D2D2D2);
+    background-image: -o-linear-gradient(top, #F0F0F0, #D2D2D2);
+    background-image: linear-gradient(to bottom, #F0F0F0, #D2D2D2);
+}
+
+.custom-select select[disabled]{
+    margin-top: -2px;
+    opacity: 0.3;
+    border-radius: 2px;
+    border: solid 1px #1b1b1b;
+    background-color: #F5F5F3;
+    background-image: none;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#F5F5F3), to(#F5F5F3));
+    background-image: -webkit-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: -moz-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: -o-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: linear-gradient(to bottom, #F5F5F3, #F5F5F3);
+    cursor: default;
+}
+.custom-select select[disabled]:hover{
+    background-color: #F5F5F3;
+    background-image: none;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#F5F5F3), to(#F5F5F3));
+    background-image: -webkit-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: -moz-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: -o-linear-gradient(top, #F5F5F3, #F5F5F3);
+    background-image: linear-gradient(to bottom, #F5F5F3, #F5F5F3);
+}
+.custom-select[disabled] label{
+    opacity: 0.3;
+}
+
+.custom-select select::-ms-expand{
+    display: none;
+}
+.custom-select label{
+    padding: 5px 0;
+    margin-top: -5px;
+}
+
+.custom-select label {
+    position: inherit;
+    width: 12px;
+    height: 12px;
+    margin-left: -24px;
+    pointer-events: none;
+}
+.custom-select label:after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: url(/src/sprite.png) -13px -7px no-repeat scroll;
+    /* margin-top: -5px; */
+    /* top: 50%; */
+}
+
+.custom-select select option{
+    background-color: #ffffff;
+}

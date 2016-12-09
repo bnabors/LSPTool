@@ -1,0 +1,102 @@
+/* Copyright 2016 Juniper Networks, Inc. All rights reserved.
+ * Licensed under the Juniper Networks Script Software License (the "License").
+ * You may not use this script file except in compliance with the License, which is located at
+ * http://www.juniper.net/support/legal/scriptlicense/
+ * Unless required by applicable law or otherwise agreed to in writing by the parties, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ */
+
+div.ul-wrapper {
+    margin: 10px 0 0 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    -webkit-overflow-scrolling : touch !important;
+}
+
+.height {
+    height: 100%;
+}
+
+ul.tab.margin li{
+    margin-right: -1px;
+}
+
+ul.tab {
+    list-style-type: none;
+    padding: 0;
+    /* background-color: #faf9f7; */
+    /*overflow-y: auto;
+    overflow-x: hidden;*/
+    overflow: hidden;
+    /*height: 100%;*/
+    /* border-top: 1px solid #E3E3E3; */
+    /* width: 100%; */
+    /*margin-bottom: -1px;*/
+    /* margin-left: 0px; */
+}
+
+ul.tab li:first-child a {
+    border-top: 1px solid #E3E3E3;
+}
+
+ul.tab li a {
+    position: relative;
+    display: block;
+    color: black;
+    text-align: left;
+    padding: 8px 8px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 14px;
+    border-bottom: 1px solid #E3E3E3;
+    border-left: 1px solid #E3E3E3;
+    border-right: 1px solid #E3E3E3;
+    /*width: 100%;*/
+    margin-left: 4px;
+    background-color: #faf9f7;
+}
+
+ul.tab li a:hover {
+    background-color: #dedddb;
+}
+
+ul.tab li a:focus, .active {
+    /*border-left: 6px solid #fa4234 !important;*/
+    border-right: 1px solid #ffffff !important;
+    background-color: #ffffff !important;
+    margin-left: 0px !important;
+}
+ul.tab li a:focus:after, .active{
+    /*border-left: 6px solid #fa4234 !important;*/
+    /* border-right: 1px solid #ffffff !important; */
+    background-color: #ffffff !important;
+}
+
+ul.tab li a div{
+    display: none;
+}
+ul.tab li a.active div{
+    display: block;
+    width: 4px;
+    position: absolute;
+    left: 0;
+    top:0;
+    height: 100%;
+    background-image: none;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#FF7171), to(#FFA34F));
+    background-image: -webkit-linear-gradient(bottom, #FF7171, #FFA34F);
+    background-image: -moz-linear-gradient(bottom, #FF7171, #FFA34F);
+    background-image: -o-linear-gradient(bottom, #FF7171, #FFA34F);
+    background-image: linear-gradient(to bottom, #FF7171, #FFA34F);
+}
+
+ul.tab li a:focus, .border-right {
+    border-right: 1px solid #E3E3E3 !important;
+    margin-right: 1px !important;
+}
+
+div.result-header {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
