@@ -15,16 +15,16 @@ import (
 )
 
 type InterfaceInformation struct {
-	XMLName           xml.Name           `xml:"interface-information"`
-	Name              string             `xml:"physical-interface>name"`
-	Bandwidth         string             `xml:"physical-interface>speed"`
-	LastFlapped       string             `xml:"physical-interface>interface-flapped"`
-	StatsLastCleared  string             `xml:"physical-interface>statistics-cleared"`
-	TrafficStatistics TrafficStatistics  `xml:"physical-interface>traffic-statistics"`
-	InputErrorList    InputErrorList     `xml:"physical-interface>input-error-list"`
-	OutputErrorList   OutputErrorList    `xml:"physical-interface>output-error-list"`
-	QueueCounters     []QueueCounterInfo `xml:"physical-interface>queue-counters>queue"`
-	PcsStatistics     PcsStatistics      `xml:"physical-interface>ethernet-pcs-statistics"`
+	XMLName           xml.Name          `xml:"interface-information"`
+	Name              string            `xml:"physical-interface>name"`
+	Bandwidth         string            `xml:"physical-interface>speed"`
+	LastFlapped       string            `xml:"physical-interface>interface-flapped"`
+	StatsLastCleared  string            `xml:"physical-interface>statistics-cleared"`
+	TrafficStatistics TrafficStatistics `xml:"physical-interface>traffic-statistics"`
+	InputErrorList    InputErrorList    `xml:"physical-interface>input-error-list"`
+	OutputErrorList   OutputErrorList   `xml:"physical-interface>output-error-list"`
+	QueueCounters     QueueCounters     `xml:"physical-interface>queue-counters"`
+	PcsStatistics     PcsStatistics     `xml:"physical-interface>ethernet-pcs-statistics"`
 }
 
 type TrafficStatistics struct {
@@ -55,6 +55,11 @@ type OutputErrorList struct {
 type PcsStatistics struct {
 	BitErrors     string `xml:"bit-error-seconds"`
 	ErroredBlocks string `xml:"errored-blocks-seconds"`
+}
+
+type QueueCounters struct {
+	QueueType         string             `xml:"interface-cos-short-summary>intf-cos-queue-type"`
+	QueueCounterInfos []QueueCounterInfo `xml:"queue"`
 }
 
 type QueueCounterInfo struct {
@@ -103,15 +108,20 @@ func (obj InterfaceInformation) ToRouterStatisticsContent(router *Router) Router
 	statistics = append(statistics, &Statistics{Title: "Output Errors", Values: rows})
 
 	rows = []*StatisticsValue{}
-	obj.addQueueCounterValue(&rows, "Best-Effort")
-	obj.addQueueCounterValue(&rows, "Video-Backup")
-	obj.addQueueCounterValue(&rows, "Business-Low")
-	obj.addQueueCounterValue(&rows, "Business-Medium")
-	obj.addQueueCounterValue(&rows, "Business-High")
-	obj.addQueueCounterValue(&rows, "Video-Primary")
-	obj.addQueueCounterValue(&rows, "VoIP")
-	obj.addQueueCounterValue(&rows, "Network-Control")
-	statistics = append(statistics, &Statistics{Title: "Ingress/Egress Queue Counters", Values: rows})
+	for _, queueCounterInfo := range obj.QueueCounters.QueueCounterInfos {
+		AddErrorRow(&rows, queueCounterInfo.Name, queueCounterInfo.TotalDropPackets)
+	}
+	var queueCountersName = "Queue Counters"
+	if strings.Contains(obj.QueueCounters.QueueType, "Egress") {
+		queueCountersName = "Egress " + queueCountersName
+	} else {
+		if strings.Contains(obj.QueueCounters.QueueType, "Ingress") {
+			queueCountersName = "Ingress " + queueCountersName
+		}
+	}
+	if len(rows) > 0 {
+		statistics = append(statistics, &Statistics{Title: queueCountersName, Values: rows})
+	}
 
 	rows = []*StatisticsValue{}
 	AddErrorRow(&rows, "Bit Errors", obj.PcsStatistics.BitErrors)
@@ -141,17 +151,6 @@ func (obj InterfaceInformation) GetName() string {
 
 func (obj InterfaceInformation) GetTrafficStatistics() TrafficStatistics {
 	return obj.TrafficStatistics
-}
-
-func (obj InterfaceInformation) addQueueCounterValue(rows *[]*StatisticsValue, header string) {
-	for _, queueCounter := range obj.QueueCounters {
-		if strings.TrimSpace(queueCounter.Name) == header {
-			AddErrorRow(rows, header, queueCounter.TotalDropPackets)
-			return
-		}
-	}
-
-	AddValueRow(rows, header, "None")
 }
 
 func ParseInterfaceInformation(xmlText []byte) InterfaceInformation {

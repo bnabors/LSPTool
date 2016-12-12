@@ -16,20 +16,23 @@ import (
 
 type (
 	LspToolConfig struct {
-		User                   string   `json:"user"`
-		Password               string   `json:"password"`
-		ServerIP               string   `json:"serverIp"`
-		ServerPort             int      `json:"serverPort"`
-		ConnectionCount        int      `json:"connectionCount"`
-		MysqlConnectionsString string   `json:"mysqlConnectionsString"`
-		MysqlRouterQuery       string   `json:"mysqlRouterQuery"`
-		IsDebug                bool     `json:"isDebug"`
-		LogLevel               string   `json:"logLevel"`
-		LogFile                string   `json:"logFile"`
-		IngressRouterNames     []string `json:"ingressRouterNames"`
-		EgressRouterNames      []string `json:"egressRouterNames"`
-		SSHConnectionTimout    int      `json:"sshConnectionTimout"`
-		PingCount              int      `json:"pingCount"`
+		User                     string   `json:"user"`
+		Password                 string   `json:"password"`
+		ServerIP                 string   `json:"serverIp"`
+		ServerPort               int      `json:"serverPort"`
+		ConnectionCount          int      `json:"connectionCount"`
+		MysqlConnectionsString   string   `json:"mysqlConnectionsString"`
+		MysqlRouterQuery         string   `json:"mysqlRouterQuery"`
+		IsDebug                  bool     `json:"isDebug"`
+		LogLevel                 string   `json:"logLevel"`
+		LogFile                  string   `json:"logFile"`
+		IngressRouterNames       []string `json:"ingressRouterNames"`
+		EgressRouterNames        []string `json:"egressRouterNames"`
+		SSHConnectionTimout      int      `json:"sshConnectionTimout"`
+		PingCount                int      `json:"pingCount"`
+		PingSize                 int      `json:"pingSize"`
+		PingLossPercentThreshold int      `json:"pingLossPercentThreshold"`
+		PingAvgThreshold         float64  `json:"pingAvgThreshold"`
 	}
 )
 
