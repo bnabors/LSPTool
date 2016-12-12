@@ -83,8 +83,6 @@ func GetPhysicalName(logicalName string) string {
 
 /*main page*/
 func GetRoutersFromMysql() (result []*models.Router, err error) {
-	result = []*models.Router{}
-
 	db, err := sql.Open("mysql", config.LspConfig.MysqlConnectionsString)
 	if err != nil {
 		lspLogger.Error(err)
@@ -99,35 +97,14 @@ func GetRoutersFromMysql() (result []*models.Router, err error) {
 		return
 	}
 
-	var (
-		id       int
-		name     string
-		ip4      string
-		proxyIP4 string
-	)
-
-	for {
-		if rows.Next() {
-			rowErr := rows.Scan(&id, &name, &ip4, &proxyIP4)
-			if rowErr != nil {
-				return result, rowErr
-			}
-			result = append(result, &models.Router{
-				Id:      id,
-				Name:    name,
-				Ip:      ip4,
-				ProxyIp: proxyIP4,
-			})
-		} else {
-			break
-		}
+	result, err = ParseDbAnswer(rows)
+	if err != nil {
+		lspLogger.Error(err)
 	}
 	return
 }
 
 func GetRoutersFromMysqlByID(routersIdList []string) (result []*models.Router, err error) {
-	result = []*models.Router{}
-
 	db, err := sql.Open("mysql", config.LspConfig.MysqlConnectionsString)
 	if err != nil {
 		lspLogger.Error(err)
@@ -146,34 +123,15 @@ func GetRoutersFromMysqlByID(routersIdList []string) (result []*models.Router, e
 		routersList += routerId
 	}
 
-	rows, err := db.Query(config.LspConfig.MysqlRouterQuery + " WHERE Id IN (" + routersList + ")")
+	rows, err := db.Query(config.LspConfig.MysqlRouterQuery + " WHERE element_id IN (" + routersList + ")")
 	if err != nil {
 		lspLogger.Error(err)
 		return
 	}
 
-	var (
-		id       int
-		name     string
-		ip4      string
-		proxyIP4 string
-	)
-
-	for {
-		if rows.Next() {
-			rowErr := rows.Scan(&id, &name, &ip4, &proxyIP4)
-			if rowErr != nil {
-				return result, rowErr
-			}
-			result = append(result, &models.Router{
-				Id:      id,
-				Name:    name,
-				Ip:      ip4,
-				ProxyIp: proxyIP4,
-			})
-		} else {
-			break
-		}
+	result, err = ParseDbAnswer(rows)
+	if err != nil {
+		lspLogger.Error(err)
 	}
 	return
 }
@@ -187,30 +145,67 @@ func GetRouterFromMysqlByID(idRouter string) (*models.Router, error) {
 
 	defer db.Close()
 
-	rows, err := db.Query(config.LspConfig.MysqlRouterQuery + " WHERE Id=" + idRouter)
+	rows, err := db.Query(config.LspConfig.MysqlRouterQuery + " WHERE element_id=" + idRouter)
 	if err != nil {
 		lspLogger.Error(err)
 		return nil, err
 	}
 
-	var (
-		id       int
-		name     string
-		ip4      string
-		proxyIP4 string
-	)
-
-	if rows.Next() {
-		rowErr := rows.Scan(&id, &name, &ip4, &proxyIP4)
-		if rowErr != nil {
-			return nil, rowErr
-		}
-		return &models.Router{
-			Id:      id,
-			Name:    name,
-			Ip:      ip4,
-			ProxyIp: proxyIP4,
-		}, nil
+	result, err := ParseDbAnswer(rows)
+	if err != nil {
+		lspLogger.Error(err)
+		return nil, err
 	}
-	return nil, errors.New("Router does not exists")
+	if result == nil || len(result) < 1 {
+		return nil, errors.New("Router does not exists")
+	}
+
+	return result[0], nil
+}
+
+func MapRouterCol(colname string, router *models.Router) interface{} {
+	switch colname {
+	case "element_id":
+		return &router.Id
+	case "hostname":
+		return &router.Name
+	case "loopbackip":
+		return &router.Ip
+	case "proxyIp4":
+		return &router.ProxyIp
+	default:
+		panic("unknown column " + colname)
+	}
+}
+
+func panicOnErr(err error) {
+	if err != nil {
+		panic(err.Error())
+	}
+}
+
+func ParseDbAnswer(rows *sql.Rows) ([]*models.Router, error) {
+	// get the column names from the query
+	var columns []string
+	columns, err := rows.Columns()
+	panicOnErr(err)
+
+	colNum := len(columns)
+	result := []*models.Router{}
+
+	for rows.Next() {
+		router := models.Router{}
+
+		// make references for the cols with the aid of VehicleCol
+		cols := make([]interface{}, colNum)
+		for i := 0; i < colNum; i++ {
+			cols[i] = MapRouterCol(columns[i], &router)
+		}
+
+		err = rows.Scan(cols...)
+		panicOnErr(err)
+
+		result = append(result, &router)
+	}
+	return result, nil
 }
