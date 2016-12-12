@@ -21,13 +21,13 @@ func Ping(source models.Router, host models.Router) (models.PingResult, error) {
 
 	var requestPattern = `<ping>
 	<count>%d</count> 
-	<size>1000</size> 
+	<size>%d</size> 
 	<rapid/> 
 	<source>%s</source> 
 	<host>%s</host> 
 </ping>`
 
-	var request = fmt.Sprintf(requestPattern, config.LspConfig.PingCount, source.Ip, host.Ip)
+	var request = fmt.Sprintf(requestPattern, config.LspConfig.PingCount, config.LspConfig.PingSize, source.Ip, host.Ip)
 
 	lspLogger.Infoln("command ping from: " + source.Name + " to: " + host.Name + " request: " + request)
 

@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 )
 
@@ -119,6 +120,8 @@ func (res PingResult) Print() {
 
 // ToIcmpResult - make models for page view
 func (res PingResult) ToIcmpResult(source Router, destination Router) IcmpResult {
+	average := float64(res.RttAverage) / 1000
+	isError := res.IsError || res.PacketLoss > config.LspConfig.PingLossPercentThreshold || average > config.LspConfig.PingAvgThreshold
 	return IcmpResult{
 		Id:                "icmp_" + strconv.Itoa(source.Id) + "_" + strconv.Itoa(destination.Id),
 		FromDevice:        source.Name,
@@ -126,10 +129,10 @@ func (res PingResult) ToIcmpResult(source Router, destination Router) IcmpResult
 		DestinationIp:     destination.Ip,
 		Loss:              strconv.FormatFloat(float64(res.PacketLoss), 'f', -1, 32) + "%",
 		Max:               strconv.FormatFloat(float64(res.RttMaximum)/1000, 'f', -1, 32),
-		Average:           strconv.FormatFloat(float64(res.RttAverage)/1000, 'f', -1, 32),
+		Average:           strconv.FormatFloat(average, 'f', -1, 32),
 		StdDev:            strconv.FormatFloat(float64(res.RttStddev)/1000, 'f', -1, 32),
 		RouterStartId:     strconv.Itoa(source.Id),
 		RouterFinishId:    strconv.Itoa(destination.Id),
-		IsError:           res.IsError,
+		IsError:           isError,
 	}
 }

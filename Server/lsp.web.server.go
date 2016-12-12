@@ -26,7 +26,7 @@ import (
 
 var (
 	sessionSync     sync.Mutex
-	activeSessions  = map[string]int{}
+	activeSessions  int = 0
 	connectionCount int
 )
 
@@ -85,22 +85,18 @@ func startUnlimitedServer(address string) {
 func getHandleFunc(handler func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		sessionSync.Lock()
-		if len(activeSessions) >= connectionCount {
+		if activeSessions >= connectionCount {
 			sendErrorResponse(w, "Connection Error: The number of active connections exceeds the maximum value")
 			sessionSync.Unlock()
 			return
 		}
-		session := (*r).RemoteAddr
-		activeSessions[session]++
+		activeSessions++
 		sessionSync.Unlock()
 
 		handler(w, r)
 
 		sessionSync.Lock()
-		activeSessions[session]--
-		if activeSessions[session] <= 0 {
-			delete(activeSessions, session)
-		}
+		activeSessions--
 		sessionSync.Unlock()
 	}
 }

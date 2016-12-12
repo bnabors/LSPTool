@@ -12,5 +12,8 @@
     "ingressRouterNames": ["CORJ","EDGJ","AGRJ"],
     "egressRouterNames": ["CORJ","EDGJ","AGRJ","BARL"],
     "sshConnectionTimout": 60,
-	"pingCount": 3
+	"pingCount": 100,
+	"pingSize": 1000,
+    "pingLossPercentThreshold": 50,
+    "pingAvgThreshold": 7.0
 }
