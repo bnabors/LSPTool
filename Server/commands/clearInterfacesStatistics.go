@@ -14,7 +14,6 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
-// ClearInterfacesStatistics очищает статистику интерфеса interfaceName, для роутера по адресу address
 func ClearInterfacesStatistics(address string, interfaceName string) error {
 	var requestPattern = `<clear-interfaces-statistics>
 	<interface-name>%s</interface-name>

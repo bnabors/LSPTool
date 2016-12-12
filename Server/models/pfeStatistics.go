@@ -7,7 +7,6 @@
 
 package models
 
-// PfeStatistic данные для интрефейса PFE
 type PfeStatistic struct {
 	Timeout          string
 	TruncatedKey     string
@@ -22,7 +21,6 @@ type PfeStatistic struct {
 	OutputMTU        string
 }
 
-// ToRouterStatisticsContent создает модель для веба
 func (stat PfeStatistic) ToRouterStatisticsContent(router *Router) RouterStatisticsContent {
 	rows := []*StatisticsValue{}
 	AddErrorRow(&rows, "Timeout", stat.Timeout)

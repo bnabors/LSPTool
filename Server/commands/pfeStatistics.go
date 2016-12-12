@@ -1,4 +1,4 @@
-﻿/* Copyright 2016 Juniper Networks, Inc. All rights reserved.
+/* Copyright 2016 Juniper Networks, Inc. All rights reserved.
  * Licensed under the Juniper Networks Script Software License (the "License").
  * You may not use this script file except in compliance with the License, which is located at
  * http://www.juniper.net/support/legal/scriptlicense/
@@ -19,7 +19,6 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-// GetPfeStatistic возвращает PFE статистику
 func GetPfeStatistic(host models.Router) (models.PfeStatistic, error) {
 	lspLogger.Infoln("command getPfeStatistic router: " + host.Name)
 
@@ -38,7 +37,6 @@ func GetPfeStatistic(host models.Router) (models.PfeStatistic, error) {
 	return result, nil
 }
 
-// ClearPfeStatistic очищает PFE статистику
 func ClearPfeStatistic(host models.Router) error {
 	clearPfeStatisticCommamd := "clear pfe statistics traffic"
 	client, err := createSSHClient(config.LspConfig.User, config.LspConfig.Password, host)

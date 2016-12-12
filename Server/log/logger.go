@@ -30,7 +30,6 @@ var (
 	objSync  sync.Mutex
 )
 
-// Initialize инициализирует lspLogger
 func Initialize(fileName string, level string) {
 	var ok bool
 	logLevel, ok = logLevels[level]
@@ -51,7 +50,6 @@ func Initialize(fileName string, level string) {
 	logger = log.New(outIo, "Log ", log.LstdFlags)
 }
 
-// Errorln записывает ошибку
 func Errorln(message string) {
 	if logLevel < logLevels["error"] {
 		return
@@ -63,17 +61,14 @@ func Errorln(message string) {
 	objSync.Unlock()
 }
 
-// Error записывает ошибку
 func Error(v ...interface{}) {
 	Errorln(fmt.Sprint(v))
 }
 
-// Errorf записывает ошибку c форматированием
 func Errorf(format string, v ...interface{}) {
 	Errorln(fmt.Sprintf(format, v))
 }
 
-// Infoln записывает входящие запросы и исходящие ответы
 func Infoln(message string) {
 	if logLevel < logLevels["info"] {
 		return
@@ -84,22 +79,18 @@ func Infoln(message string) {
 	objSync.Unlock()
 }
 
-// Info записывает ошибку
 func Info(v ...interface{}) {
 	Infoln(fmt.Sprint(v))
 }
 
-// Infof записывает входящие запросы и исходящие ответы c форматированием
 func Infof(format string, v ...interface{}) {
 	Infoln(fmt.Sprintf(format, v))
 }
 
-// Debug записывает ошибку
 func Debug(v ...interface{}) {
 	Debugln(fmt.Sprint(v))
 }
 
-// Debugln записывает отладочное сообщение
 func Debugln(message string) {
 	if logLevel < logLevels["debug"] {
 		return
@@ -110,12 +101,10 @@ func Debugln(message string) {
 	objSync.Unlock()
 }
 
-// Debugf записывает отладочное сообщение c форматированием
 func Debugf(format string, v ...interface{}) {
 	Debugln(fmt.Sprintf(format, v))
 }
 
-// CheckError проверить на ошибку и записать
 func CheckError(e error) {
 	if e != nil {
 		Errorln(e.Error())

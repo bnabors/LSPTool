@@ -16,7 +16,6 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
-// Ping - пингует заданный адрес
 func Ping(source models.Router, host models.Router) (models.PingResult, error) {
 
 	var requestPattern = `<ping>
