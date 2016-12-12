@@ -103,12 +103,12 @@ func GetRoutersFromMysql() (result []*models.Router, err error) {
 		id       int
 		name     string
 		ip4      string
-		puttyIP4 string
+		proxyIP4 string
 	)
 
 	for {
 		if rows.Next() {
-			rowErr := rows.Scan(&id, &name, &ip4, &puttyIP4)
+			rowErr := rows.Scan(&id, &name, &ip4, &proxyIP4)
 			if rowErr != nil {
 				return result, rowErr
 			}
@@ -116,7 +116,7 @@ func GetRoutersFromMysql() (result []*models.Router, err error) {
 				Id:      id,
 				Name:    name,
 				Ip:      ip4,
-				PuttyIp: puttyIP4,
+				ProxyIp: proxyIP4,
 			})
 		} else {
 			break
@@ -156,12 +156,12 @@ func GetRoutersFromMysqlByID(routersIdList []string) (result []*models.Router, e
 		id       int
 		name     string
 		ip4      string
-		puttyIP4 string
+		proxyIP4 string
 	)
 
 	for {
 		if rows.Next() {
-			rowErr := rows.Scan(&id, &name, &ip4, &puttyIP4)
+			rowErr := rows.Scan(&id, &name, &ip4, &proxyIP4)
 			if rowErr != nil {
 				return result, rowErr
 			}
@@ -169,7 +169,7 @@ func GetRoutersFromMysqlByID(routersIdList []string) (result []*models.Router, e
 				Id:      id,
 				Name:    name,
 				Ip:      ip4,
-				PuttyIp: puttyIP4,
+				ProxyIp: proxyIP4,
 			})
 		} else {
 			break
@@ -197,11 +197,11 @@ func GetRouterFromMysqlByID(idRouter string) (*models.Router, error) {
 		id       int
 		name     string
 		ip4      string
-		puttyIP4 string
+		proxyIP4 string
 	)
 
 	if rows.Next() {
-		rowErr := rows.Scan(&id, &name, &ip4, &puttyIP4)
+		rowErr := rows.Scan(&id, &name, &ip4, &proxyIP4)
 		if rowErr != nil {
 			return nil, rowErr
 		}
@@ -209,7 +209,7 @@ func GetRouterFromMysqlByID(idRouter string) (*models.Router, error) {
 			Id:      id,
 			Name:    name,
 			Ip:      ip4,
-			PuttyIp: puttyIP4,
+			ProxyIp: proxyIP4,
 		}, nil
 	}
 	return nil, errors.New("Router does not exists")

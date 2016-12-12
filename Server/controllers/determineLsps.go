@@ -32,9 +32,9 @@ func DetermineLsps(o models.DetermineOptions) (models.LspCollection, error) {
 			Id:             mplsInfo.Name,
 			Name:           mplsInfo.Name,
 			IngressIp:      o.Ingress.Ip,
-			IngressPuttyip: o.Ingress.GetAddress(),
+			IngressProxyip: o.Ingress.GetAddress(),
 			EgressIp:       o.Egress.Ip,
-			EgressPuttyip:  o.Egress.GetAddress(),
+			EgressProxyip:  o.Egress.GetAddress(),
 			GroupId:        getGroupId(&result.LspGroups, path),
 			Bandwidth:      mplsInfo.MplsLspPath.Bandwidth}
 

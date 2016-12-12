@@ -17,12 +17,12 @@ type Router struct {
 	Id      int    `json:"id"`
 	Name    string `json:"name"`
 	Ip      string `json:"ip"`
-	PuttyIp string `json:"puttyip"`
+	ProxyIp string `json:"proxyip"`
 }
 
 func (router Router) GetAddress() string {
-	if router.PuttyIp != "" && config.LspConfig.IsDebug {
-		return router.PuttyIp
+	if router.ProxyIp != "" && config.LspConfig.IsDebug {
+		return router.ProxyIp
 	}
 	return router.Ip
 }
@@ -43,9 +43,9 @@ type LspItem struct {
 	Id             string `json:"id"`
 	Name           string `json:"name"`
 	IngressIp      string `json:"ingressIp"`
-	IngressPuttyip string `json:"ingressPuttyip"`
+	IngressProxyip string `json:"ingressProxyip"`
 	EgressIp       string `json:"egressIp"`
-	EgressPuttyip  string `json:"egressPuttyip"`
+	EgressProxyip  string `json:"egressProxyip"`
 	GroupId        string `json:"groupId"`
 	Bandwidth      string `json:"bandwidth"`
 }

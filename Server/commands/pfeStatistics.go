@@ -1,4 +1,4 @@
-﻿/* Copyright 2016 Juniper Networks, Inc. All rights reserved.
+/* Copyright 2016 Juniper Networks, Inc. All rights reserved.
  * Licensed under the Juniper Networks Script Software License (the "License").
  * You may not use this script file except in compliance with the License, which is located at
  * http://www.juniper.net/support/legal/scriptlicense/
@@ -147,7 +147,7 @@ func runCommand(client *ssh.Client, command string) (string, error) {
 }
 
 func sshTest() {
-	router := models.Router{Name: "r1", Ip: "172.31.0.1", PuttyIp: "127.0.0.1:2001"}
+	router := models.Router{Name: "r1", Ip: "172.31.0.1", ProxyIp: "127.0.0.1:2001"}
 
 	var pfeStatistics, _ = GetPfeStatistic(router)
 	var content = pfeStatistics.ToRouterStatisticsContent(&router)

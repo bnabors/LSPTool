@@ -48,8 +48,8 @@ func Ping(source models.Router, host models.Router) (models.PingResult, error) {
 }
 
 func pingTest() {
-	sourceRouter := models.Router{Id: 1, Name: "r1", Ip: "172.31.0.1", PuttyIp: "127.0.0.1:2001"}
-	hostRouter := models.Router{Id: 2, Name: "r2", Ip: "172.31.0.2", PuttyIp: "127.0.0.1:2002"}
+	sourceRouter := models.Router{Id: 1, Name: "r1", Ip: "172.31.0.1", ProxyIp: "127.0.0.1:2001"}
+	hostRouter := models.Router{Id: 2, Name: "r2", Ip: "172.31.0.2", ProxyIp: "127.0.0.1:2002"}
 
 	pingResult, _ := Ping(sourceRouter, hostRouter)
 	pingResult.Print()
