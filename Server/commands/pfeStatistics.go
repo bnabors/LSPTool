@@ -114,14 +114,25 @@ func getValueFromLine(line string) string {
 }
 
 func createSSHClient(user string, password string, router models.Router) (*ssh.Client, error) {
-	config := &ssh.ClientConfig{
+	cfg := &ssh.ClientConfig{
 		User: user,
 		Auth: []ssh.AuthMethod{
 			ssh.Password(password),
 		},
 		Timeout: time.Duration(config.LspConfig.SSHConnectionTimout) * time.Second,
 	}
-	client, err := ssh.Dial("tcp", router.GetAddress(), config)
+	address := router.GetAddress()
+
+	var finalAddress = ""
+	if config.LspConfig.IsDebug {
+		finalAddress = address
+	} else if strings.Contains(address, ":") {
+		finalAddress = address
+	} else {
+		finalAddress = address + ":22"
+	}
+
+	client, err := ssh.Dial("tcp", finalAddress, cfg)
 	if err != nil {
 		lspLogger.Errorf("SshCommand Error: %v", err)
 		return nil, err

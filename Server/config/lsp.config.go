@@ -49,6 +49,12 @@ func ReadConfig() {
 		lspLogger.Error(err)
 	}
 
+	if lspConfig.IsDebug {
+		lspConfig.MysqlRouterQuery = "Select element_id,hostname,loopbackip, proxyIp4 from router"
+	} else {
+		lspConfig.MysqlRouterQuery = "Select element_id,hostname,loopbackip from bgpmanager.element"
+	}
+
 	LspConfig = lspConfig
 
 	return
