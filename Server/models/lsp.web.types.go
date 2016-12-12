@@ -21,7 +21,7 @@ type Router struct {
 }
 
 func (router Router) GetAddress() string {
-	if router.ProxyIp != "" && config.LspConfig.IsDebug {
+	if router.ProxyIp != "" && config.LspConfig.UseProxy {
 		return router.ProxyIp
 	}
 	return router.Ip

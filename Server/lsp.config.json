@@ -5,7 +5,7 @@
     "serverPort": 9002,
     "connectionCount": 10,
     "mysqlConnectionsString" : "root:Qwerty123!@tcp(1492vrsql.bell-main.bellintegrator.ru:3306)/wow_test",
-    "isDebug": true,
+    "useProxy": true,
     "logLevel": "info",
     "logFile": "service.log",
     "ingressRouterNames": ["CORJ","EDGJ","AGRJ"],

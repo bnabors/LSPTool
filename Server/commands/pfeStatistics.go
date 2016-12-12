@@ -124,7 +124,7 @@ func createSSHClient(user string, password string, router models.Router) (*ssh.C
 	address := router.GetAddress()
 
 	var finalAddress = ""
-	if config.LspConfig.IsDebug {
+	if config.LspConfig.UseProxy {
 		finalAddress = address
 	} else if strings.Contains(address, ":") {
 		finalAddress = address

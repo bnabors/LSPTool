@@ -21,7 +21,7 @@ func CreateSession(address string) (*netconf.Session, error) {
 	var timeout = time.Duration(config.LspConfig.SSHConnectionTimout) * time.Second
 
 	var finalAddress = ""
-	if config.LspConfig.IsDebug {
+	if config.LspConfig.UseProxy {
 		finalAddress = address
 	} else if strings.Contains(address, ":") {
 		finalAddress = address

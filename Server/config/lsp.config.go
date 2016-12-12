@@ -23,7 +23,7 @@ type (
 		ConnectionCount          int      `json:"connectionCount"`
 		MysqlConnectionsString   string   `json:"mysqlConnectionsString"`
 		MysqlRouterQuery         string   `json:"mysqlRouterQuery"`
-		IsDebug                  bool     `json:"isDebug"`
+		UseProxy                 bool     `json:"useProxy"`
 		LogLevel                 string   `json:"logLevel"`
 		LogFile                  string   `json:"logFile"`
 		IngressRouterNames       []string `json:"ingressRouterNames"`
@@ -49,7 +49,7 @@ func ReadConfig() {
 		lspLogger.Error(err)
 	}
 
-	if lspConfig.IsDebug {
+	if lspConfig.UseProxy {
 		lspConfig.MysqlRouterQuery = "Select element_id,hostname,loopbackip, proxyIp4 from router"
 	} else {
 		lspConfig.MysqlRouterQuery = "Select element_id,hostname,loopbackip from bgpmanager.element"
