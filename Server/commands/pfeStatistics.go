@@ -1,4 +1,4 @@
-/* Copyright 2016 Juniper Networks, Inc. All rights reserved.
+﻿/* Copyright 2016 Juniper Networks, Inc. All rights reserved.
  * Licensed under the Juniper Networks Script Software License (the "License").
  * You may not use this script file except in compliance with the License, which is located at
  * http://www.juniper.net/support/legal/scriptlicense/
@@ -25,11 +25,11 @@ func GetPfeStatistic(host models.Router) (models.PfeStatistic, error) {
 
 	getPfeStatisticCommamd := "show pfe statistics traffic"
 	client, err := createSSHClient(config.LspConfig.User, config.LspConfig.Password, host)
-	defer client.Close()
-
 	if err != nil {
 		return models.PfeStatistic{}, err
 	}
+	defer client.Close()
+
 	commandResult, err := runCommand(client, getPfeStatisticCommamd)
 	if err != nil {
 		return models.PfeStatistic{}, err
@@ -42,11 +42,10 @@ func GetPfeStatistic(host models.Router) (models.PfeStatistic, error) {
 func ClearPfeStatistic(host models.Router) error {
 	clearPfeStatisticCommamd := "clear pfe statistics traffic"
 	client, err := createSSHClient(config.LspConfig.User, config.LspConfig.Password, host)
-	defer client.Close()
-
 	if err != nil {
 		return err
 	}
+	defer client.Close()
 
 	_, err = runCommand(client, clearPfeStatisticCommamd)
 	return err
@@ -80,6 +79,10 @@ func parseStatistic(commandResult string) models.PfeStatistic {
 			result.StackOverflow = getValueFromLine(line)
 			continue
 		}
+		if strings.Contains(line, "Normal discard") {
+			result.NormalDiscard = getValueFromLine(line)
+			continue
+		}
 		if strings.Contains(line, "Extended discard") {
 			result.ExtendedDiscard = getValueFromLine(line)
 			continue
@@ -94,6 +97,10 @@ func parseStatistic(commandResult string) models.PfeStatistic {
 		}
 		if strings.Contains(line, "Fabric drops") {
 			result.FabricDrops = getValueFromLine(line)
+			continue
+		}
+		if strings.Contains(line, "Input Checksum") {
+			result.InputChecksum = getValueFromLine(line)
 			continue
 		}
 		if strings.Contains(line, "Output MTU") {
