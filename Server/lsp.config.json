@@ -9,8 +9,8 @@
     "isDebug": true,
     "logLevel": "info",
     "logFile": "service.log",
-    "ingressRouterNames": ["CORJ","EDGJ","AGRJ","BBRJ"],
-    "egressRouterNames": ["CORJ","EDGJ","AGRJ","BBRJ","BARL"],
+    "ingressRouterNames": ["CORJ","EDGJ","AGRJ"],
+    "egressRouterNames": ["CORJ","EDGJ","AGRJ","BARL"],
     "sshConnectionTimout": 60,
 	"pingCount": 3
 }
