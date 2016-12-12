@@ -8,6 +8,7 @@
 package utils
 
 import (
+	"strings"
 	"time"
 
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
@@ -18,7 +19,17 @@ func CreateSession(address string) (*netconf.Session, error) {
 	user, password := config.LspConfig.User, config.LspConfig.Password
 
 	var timeout = time.Duration(config.LspConfig.SSHConnectionTimout) * time.Second
-	session, err := netconf.DialSSHTimeout(address, netconf.SSHConfigPassword(user, password), timeout)
+
+	var finalAddress = ""
+	if config.LspConfig.UseProxy {
+		finalAddress = address
+	} else if strings.Contains(address, ":") {
+		finalAddress = address
+	} else {
+		finalAddress = address + ":22"
+	}
+
+	session, err := netconf.DialSSHTimeout(finalAddress, netconf.SSHConfigPassword(user, password), timeout)
 
 	return session, err
 }

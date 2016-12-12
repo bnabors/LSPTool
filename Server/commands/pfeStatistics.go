@@ -112,14 +112,25 @@ func getValueFromLine(line string) string {
 }
 
 func createSSHClient(user string, password string, router models.Router) (*ssh.Client, error) {
-	config := &ssh.ClientConfig{
+	cfg := &ssh.ClientConfig{
 		User: user,
 		Auth: []ssh.AuthMethod{
 			ssh.Password(password),
 		},
 		Timeout: time.Duration(config.LspConfig.SSHConnectionTimout) * time.Second,
 	}
-	client, err := ssh.Dial("tcp", router.GetAddress(), config)
+	address := router.GetAddress()
+
+	var finalAddress = ""
+	if config.LspConfig.UseProxy {
+		finalAddress = address
+	} else if strings.Contains(address, ":") {
+		finalAddress = address
+	} else {
+		finalAddress = address + ":22"
+	}
+
+	client, err := ssh.Dial("tcp", finalAddress, cfg)
 	if err != nil {
 		lspLogger.Errorf("SshCommand Error: %v", err)
 		return nil, err
@@ -145,7 +156,7 @@ func runCommand(client *ssh.Client, command string) (string, error) {
 }
 
 func sshTest() {
-	router := models.Router{Name: "r1", Ip: "172.31.0.1", PuttyIp: "127.0.0.1:2001"}
+	router := models.Router{Name: "r1", Ip: "172.31.0.1", ProxyIp: "127.0.0.1:2001"}
 
 	var pfeStatistics, _ = GetPfeStatistic(router)
 	var content = pfeStatistics.ToRouterStatisticsContent(&router)
