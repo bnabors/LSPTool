@@ -72,7 +72,7 @@ func toInt(v string) int {
 func toIntAndLog(v string) int {
 	integer, err := strconv.Atoi(strings.TrimSpace(v))
 	if err != nil {
-		lspLogger.Errorf("Error: %v", err)
+		lspLogger.Infof("Parse Error: %v", err)
 	}
 	return integer
 }

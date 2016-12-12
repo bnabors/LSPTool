@@ -79,10 +79,6 @@ func parseStatistic(commandResult string) models.PfeStatistic {
 			result.StackOverflow = getValueFromLine(line)
 			continue
 		}
-		if strings.Contains(line, "Normal discard") {
-			result.NormalDiscard = getValueFromLine(line)
-			continue
-		}
 		if strings.Contains(line, "Extended discard") {
 			result.ExtendedDiscard = getValueFromLine(line)
 			continue
@@ -97,10 +93,6 @@ func parseStatistic(commandResult string) models.PfeStatistic {
 		}
 		if strings.Contains(line, "Fabric drops") {
 			result.FabricDrops = getValueFromLine(line)
-			continue
-		}
-		if strings.Contains(line, "Input Checksum") {
-			result.InputChecksum = getValueFromLine(line)
 			continue
 		}
 		if strings.Contains(line, "Output MTU") {
