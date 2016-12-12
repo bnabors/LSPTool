@@ -252,6 +252,11 @@ func (trb *TestResultBuilder) runLinkDirectTests(currentIp string, nextIp string
 		return
 	}
 
+	if nextRouter == nil {
+		err = errors.New("cannot get ospf neighbor information")
+		return
+	}
+
 	neighborId = (*nextRouter).NeighborId
 	result.Destination = (*nextRouter).NeighborAddress
 
