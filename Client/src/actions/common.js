@@ -42,15 +42,15 @@ function parse(response, successAction, errorAction) {
 
 export function request(options) {
     /*
-     url - url (throw exception if undefined)
-     data - post query data (may be undefined)
+     url 
+     data 
 
-     preAction - action called before post query
-     preActions - collection of actions which called before post query
-     preData - data for preAction
+     preAction 
+     preActions 
+     preData 
 
-     afterAction - action called after post query
-     afterActions - collection of actions which called after post query
+     afterAction 
+     afterActions 
      */
 
     return function (dispatch) {

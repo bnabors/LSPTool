@@ -332,18 +332,18 @@ export default class Diagram extends React.Component {
         if (options.step >= MAX_STEP) {
             let direction = null;
             let nextDirection = options.nextDirection;
-            options.step = 1; //1 элемент уже нарисовали
+            options.step = 1;
 
             switch (options.direction) {
                 case DIRECTION.RIGHT:
                     direction = DIRECTION.DOWN;
                     nextDirection = DIRECTION.LEFT;
-                    options.step++; //чтобы пройти по условию MAX_STEP - вниз рисуем 1 раз
+                    options.step++;
                     break;
                 case DIRECTION.LEFT:
                     direction = DIRECTION.DOWN;
                     nextDirection = DIRECTION.RIGHT;
-                    options.step++; //чтобы пройти по условию MAX_STEP - вниз рисуем 1 раз
+                    options.step++;
                     break;
                 case DIRECTION.DOWN:
                     direction = options.nextDirection;
