@@ -11,6 +11,7 @@ import (
 	"encoding/xml"
 	"strings"
 
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/helpers"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 )
 
@@ -83,10 +84,10 @@ func (obj InterfaceInformation) ToRouterStatisticsContent(router *Router) Router
 	statistics = append(statistics, &Statistics{Title: "Stats Last Cleared", Values: rows})
 
 	rows = []*StatisticsValue{}
-	AddValueRow(&rows, "Input Bytes", obj.TrafficStatistics.InputBytes)
-	AddValueRow(&rows, "Ouput Bytes", obj.TrafficStatistics.OutputBytes)
-	AddValueRow(&rows, "Input packets", obj.TrafficStatistics.InputPackets)
-	AddValueRow(&rows, "Ouput packets", obj.TrafficStatistics.OutputPackets)
+	AddValueRow(&rows, "BPS In", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.InputBytes))
+	AddValueRow(&rows, "BPS Out", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.OutputBytes))
+	AddValueRow(&rows, "PPS In", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.InputPackets))
+	AddValueRow(&rows, "PPS Out", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.OutputPackets))
 	statistics = append(statistics, &Statistics{Title: "Traffic Statistics", Values: rows})
 
 	rows = []*StatisticsValue{}
