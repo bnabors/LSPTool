@@ -210,7 +210,7 @@ export default class Diagram extends React.Component {
     static numberToLocal(stringValue) {
         let number = parseFloat(stringValue);
         if (number) {
-            return number.toLocaleString("de-DE", {maximumFractionDigits: 0}); //de-DE with point delimiter
+            return number.toLocaleString("en-US", {maximumFractionDigits: 0}); //de-DE with point delimiter
         }
         return stringValue;
     }
@@ -305,16 +305,16 @@ export default class Diagram extends React.Component {
             txtClass = "text-right text-label";
             x += isShort === true ? ADDITIONAL_X_LABEL_RIGHT_SHORT : ADDITIONAL_X_LABEL_RIGHT;
         }
-        res.push(Diagram.renderText(x, y, txtClass, "Byte In"));
+        res.push(Diagram.renderText(x, y, txtClass, "BPS In"));
 
         y += SUMMARY_STEP;
-        res.push(Diagram.renderText(x, y, txtClass, "Byte Out"));
+        res.push(Diagram.renderText(x, y, txtClass, "BPS Out"));
 
         y += SUMMARY_STEP;
-        res.push(Diagram.renderText(x, y, txtClass, "Packet In"));
+        res.push(Diagram.renderText(x, y, txtClass, "PPS In"));
 
         y += SUMMARY_STEP;
-        res.push(Diagram.renderText(x, y, txtClass, "Packet Out"));
+        res.push(Diagram.renderText(x, y, txtClass, "PPS Out"));
 
         Diagram.checkCrds(x, y);
 

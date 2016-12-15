@@ -58,11 +58,12 @@
 }
 
 .app-main-panel {
-    width: 16%;
+    /*width: 16%;*/
 }
 
 .app-main-content {
-    width: 84%;
+    /*width: 84%;*/
+    width: 80%;
 }
 
 .app-inner-panel{
@@ -140,7 +141,8 @@ div.app-result-lsp {
     /* min-width: 400px; */
     float: left;
     position: relative;
-    width: 84%;
+    /*width: 84%;*/
+    width: 80%;
     /* min-width: 445px; */
 }
 

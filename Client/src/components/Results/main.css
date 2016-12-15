@@ -54,6 +54,7 @@ ul.tab li a {
     /*width: 100%;*/
     margin-left: 4px;
     background-color: #faf9f7;
+    word-break: break-all;
 }
 
 ul.tab li a:hover {

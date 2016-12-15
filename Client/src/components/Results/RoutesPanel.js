@@ -112,6 +112,6 @@ class RouteItem extends React.Component {
     }
 
     render() {
-        return (<a ref="test" className="routelinks border-right" onClick={this.clickHandler.bind(this)}>{this.props.data.name}<div/></a>)
+        return (<a ref="test" className="routelinks border-right" onClick={this.clickHandler.bind(this)} title={this.props.data.name}>{this.props.data.name}<div/></a>)
     }
 }

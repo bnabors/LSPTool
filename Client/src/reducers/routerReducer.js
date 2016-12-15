@@ -24,12 +24,27 @@ export default function reducer(state = {
             return {...state, fetching: true}
         }
         case FETCH_ROUTERS_SUCCESS: {
+
+            let ingress_routers = action.payload.ingress_routers;
+            if (ingress_routers) {
+                ingress_routers.sort(function (a, b) {
+                    return a.name.localeCompare(b.name);
+                })
+            }
+
+            let egress_routers = action.payload.egress_routers;
+            if (egress_routers) {
+                egress_routers.sort(function (a, b) {
+                    return a.name.localeCompare(b.name);
+                })
+            }
+
             return {
                 ...state,
                 fetching: false,
                 fetched: true,
-                ingress_routers: action.payload.ingress_routers,
-                egress_routers: action.payload.egress_routers
+                ingress_routers: ingress_routers,
+                egress_routers: egress_routers
             }
         }
         case APP_ERROR: {
