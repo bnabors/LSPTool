@@ -9,6 +9,7 @@ package command
 
 import (
 	"bytes"
+	"errors"
 	"strings"
 	"time"
 
@@ -25,13 +26,13 @@ func GetPfeStatistic(host models.Router) (models.PfeStatistic, error) {
 	getPfeStatisticCommamd := "show pfe statistics traffic"
 	client, err := createSSHClient(config.LspConfig.User, config.LspConfig.Password, host)
 	if err != nil {
-		return models.PfeStatistic{}, err
+		return models.PfeStatistic{}, errors.New(err.Error() + "\r\n Information: command " + getPfeStatisticCommamd)
 	}
 	defer client.Close()
 
 	commandResult, err := runCommand(client, getPfeStatisticCommamd)
 	if err != nil {
-		return models.PfeStatistic{}, err
+		return models.PfeStatistic{}, errors.New(err.Error() + "\r\n Information: command " + getPfeStatisticCommamd)
 	}
 	result := parseStatistic(commandResult)
 	return result, nil
@@ -41,12 +42,15 @@ func ClearPfeStatistic(host models.Router) error {
 	clearPfeStatisticCommamd := "clear pfe statistics traffic"
 	client, err := createSSHClient(config.LspConfig.User, config.LspConfig.Password, host)
 	if err != nil {
-		return err
+		return errors.New(err.Error() + "\r\n Information: command " + clearPfeStatisticCommamd)
 	}
 	defer client.Close()
 
 	_, err = runCommand(client, clearPfeStatisticCommamd)
-	return err
+	if err != nil {
+		return errors.New(err.Error() + "\r\n Information: command " + clearPfeStatisticCommamd)
+	}
+	return nil
 }
 
 func parseStatistic(commandResult string) models.PfeStatistic {

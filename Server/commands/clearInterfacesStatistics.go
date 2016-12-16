@@ -10,6 +10,8 @@ package command
 import (
 	"fmt"
 
+	"errors"
+
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
@@ -19,21 +21,22 @@ func ClearInterfacesStatistics(address string, interfaceName string) error {
 	<interface-name>%s</interface-name>
 </clear-interfaces-statistics>`
 
-	lspLogger.Infoln("command clearInterfacesStatistics address: " + address + " interfaceName: " + interfaceName)
+	commandDescription := "command clearInterfacesStatistics address: " + address + " interfaceName: " + interfaceName
+	lspLogger.Infoln(commandDescription)
 
 	var request = fmt.Sprintf(requestPattern, interfaceName)
 
 	session, err := utils.CreateSession(address)
 	if err != nil {
-		lspLogger.Error(err)
-		return err
+		lspLogger.Error(err, request)
+		return errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 	defer session.Close()
 
 	_, err = utils.MakeNetconfRequest(session, request)
 	if err != nil {
-		lspLogger.Error(err)
-		return err
+		lspLogger.Error(err, request)
+		return errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
 	return nil

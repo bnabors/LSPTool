@@ -8,6 +8,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 
 	"strings"
@@ -28,20 +29,21 @@ const (
 
 // LoadInterfaceInfo returns information about interface with name is interfaceName in router by address (possible nil)
 func LoadInterfaceInfo(sm *sessions.SessionsManager, address string, interfaceName string) (models.IRouterStatistics, error) {
-	lspLogger.Infoln("command loadInterfaceInfo address: " + address + " interfaceName: " + interfaceName)
+	commandDescription := "command loadInterfaceInfo address: " + address + " interfaceName: " + interfaceName
+	lspLogger.Infoln(commandDescription)
 
 	var request = fmt.Sprintf(requestPattern, interfaceName)
 
 	session, err := sm.GetSession(address)
 	if err != nil {
-		lspLogger.Error(err)
-		return nil, err
+		lspLogger.Error(err, request)
+		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
 	reply, err := utils.MakeNetconfRequest(session, request)
 	if err != nil {
-		lspLogger.Error(err)
-		return nil, err
+		lspLogger.Error(err, request)
+		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
 	result := models.ParseInterfaceInformation([]byte(reply.Data))
@@ -50,20 +52,21 @@ func LoadInterfaceInfo(sm *sessions.SessionsManager, address string, interfaceNa
 
 // LoadAggregateInterfaceInfo returns information about agregate interface with name is interfaceName in router by address (possible nil)
 func LoadAggregateInterfaceInfo(sm *sessions.SessionsManager, address string, interfaceName string) (models.IRouterStatistics, error) {
-	lspLogger.Infoln("command loadAggregateInterfaceInfo address: " + address + " interfaceName: " + interfaceName)
+	commandDescription := "command loadAggregateInterfaceInfo address: " + address + " interfaceName: " + interfaceName
+	lspLogger.Infoln(commandDescription)
 
 	var request = fmt.Sprintf(requestPattern, interfaceName)
 
 	session, err := sm.GetSession(address)
 	if err != nil {
-		lspLogger.Error(err)
-		return nil, err
+		lspLogger.Error(err, request)
+		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
 	reply, err := utils.MakeNetconfRequest(session, request)
 	if err != nil {
-		lspLogger.Error(err)
-		return nil, err
+		lspLogger.Error(err, request)
+		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 	result := models.ParseAgregateInterfaceInformation([]byte(reply.Data))
 	result.SubInterface, err = getSubInterfaceInfo(sm, address, result.SubInterfaceNames)
