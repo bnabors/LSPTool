@@ -31,7 +31,7 @@ export default class LspItem extends React.Component {
     render() {
         if (this.props.can_select === true) {
             return (
-                <div>
+                <div className="checkbox-wrapper">
                     <Checkbox id={this.props.id} content={this.props.name} checked={this.state.selected} onClick={this.selectionChanged.bind(this)} />
                 </div>
             );

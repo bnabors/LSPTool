@@ -19,14 +19,14 @@ div.lsp-header input[type="checkbox"] {
     margin: 0px !important;
 }
 
-div.lsp-header label {
-    margin-left: 5px;
+div.lsp-header div.checkbox-text-container {
     font-weight: bold;
 }
 
 div.item-unselectable{
     font-size: 12px;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    word-break: break-all;
 }
 
 div.lsp-header-unselectable {
@@ -64,4 +64,8 @@ div.lsp-list {
     margin-top: 5px;
     -webkit-overflow-scrolling : touch !important;
     overflow-x: hidden;
+}
+
+div.checkbox-wrapper{
+    padding-top: 3px;
 }

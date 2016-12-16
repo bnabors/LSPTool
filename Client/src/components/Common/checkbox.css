@@ -9,25 +9,23 @@
     display: block;
     position: relative;
 }
-
-.checkbox-container label.textCheckbox{
-    position: relative;
+.checkbox-text-container{
     margin-left: 25px;
+    position: relative;
     cursor: pointer;
     font-size: 12px;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    text-overflow: ellipsis;      /* Required for text-overflow to do anything */
-    white-space: nowrap;
     overflow: hidden;
+    word-break: break-all;
 }
 
 .checkbox-container label.innerCheckbox {
     cursor: pointer;
     position: absolute;
-    margin: 2px;
+    margin: 1px;
     width: 12px;
     height: 12px;
-    top: 4px;
+    /* top: 4px; */
     border-radius: 0;
 
     -webkit-box-shadow: inset 0 0 1px 0 #B3B3B3, 0 0 0 1px #B3B3B3;

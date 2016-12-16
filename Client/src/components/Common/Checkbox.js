@@ -22,7 +22,9 @@ export default class Checkbox extends React.Component{
             <div className="checkbox-container">
                 <input ref="checkbox" type="checkbox" value="None" id={this.props.id} name="check" checked={this.props.checked} />
                 <label className="innerCheckbox" htmlFor={this.props.id} onClick={this.onClick.bind(this)}/>
-                <label className="textCheckbox" htmlFor={this.props.id} onClick={this.onClick.bind(this)} title={this.props.content}>{this.props.content}</label>
+                <div className="checkbox-text-container" htmlFor={this.props.id} onClick={this.onClick.bind(this)} title={this.props.content}>
+                    {this.props.content}
+                </div>
             </div>
         )
     }
