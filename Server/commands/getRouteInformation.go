@@ -8,6 +8,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
@@ -22,20 +23,21 @@ func LoadRouteInfo(sm *sessions.SessionsManager, address string, destination str
 	<table>%s</table>
 </get-route-information>
 `
-	lspLogger.Infoln("command getRouteInfo from: " + address + " to: " + destination)
+	commandDescription := "command getRouteInfo from: " + address + " to: " + destination
+	lspLogger.Infoln(commandDescription)
 
 	var request = fmt.Sprintf(requestPattern, destination, table)
 
 	session, err := sm.GetSession(address)
 	if err != nil {
-		lspLogger.Error(err)
-		return models.RouteInformation{}, err
+		lspLogger.Error(err, request)
+		return models.RouteInformation{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
 	reply, err := utils.MakeNetconfRequest(session, request)
 	if err != nil {
-		lspLogger.Error(err)
-		return models.RouteInformation{}, err
+		lspLogger.Error(err, request)
+		return models.RouteInformation{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
 	return models.ParseRouteInformation([]byte(reply.Data)), nil

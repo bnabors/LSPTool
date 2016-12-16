@@ -8,6 +8,8 @@
 package command
 
 import (
+	"errors"
+
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
@@ -19,20 +21,20 @@ func LoadMplsLspInfo(ingressAddress string, egressAddress string) ([]models.Mpls
     <extensive/>
 </get-mpls-lsp-information>
 `
-
-	lspLogger.Infoln("command loadMplsLspInfo ingressAddress: " + ingressAddress + " egressAddress: " + egressAddress)
+	commandDescription := "command loadMplsLspInfo ingressAddress: " + ingressAddress + " egressAddress: " + egressAddress
+	lspLogger.Infoln(commandDescription)
 
 	session, err := utils.CreateSession(ingressAddress)
 	if err != nil {
-		lspLogger.Error(err)
-		return nil, err
+		lspLogger.Error(err, request)
+		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 	defer session.Close()
 
 	reply, err := utils.MakeNetconfRequest(session, request)
 	if err != nil {
-		lspLogger.Error(err)
-		return nil, err
+		lspLogger.Error(err, request)
+		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
 	mplsLspInformation := models.ParseMplsLspInformation([]byte(reply.Data))

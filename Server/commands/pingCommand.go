@@ -8,6 +8,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
@@ -28,19 +29,20 @@ func Ping(source models.Router, host models.Router) (models.PingResult, error) {
 
 	var request = fmt.Sprintf(requestPattern, config.LspConfig.PingCount, config.LspConfig.PingSize, source.Ip, host.Ip)
 
-	lspLogger.Infoln("command ping from: " + source.Name + " to: " + host.Name + " request: " + request)
+	commandDescription := "command ping from: " + source.Name + " to: " + host.Name + " request: " + request
+	lspLogger.Infoln(commandDescription)
 
 	session, err := utils.CreateSession(source.GetAddress())
 	if err != nil {
-		lspLogger.Error(err)
-		return models.PingResult{}, err
+		lspLogger.Error(err, request)
+		return models.PingResult{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 	defer session.Close()
 
 	reply, err := utils.MakeNetconfRequest(session, request)
 	if err != nil {
-		lspLogger.Error(err)
-		return models.PingResult{}, err
+		lspLogger.Error(err, request)
+		return models.PingResult{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
 	return models.ParsePing([]byte(reply.Data)), nil
