@@ -75,6 +75,8 @@ type TestLspOptions struct {
 }
 
 type TestOptions struct {
+	Ingress   Router            `json:"ingress"`
+	Egress    Router            `json:"egress"`
 	P2P       []*TestLspOptions `json:"p2p"`
 	P2MP      []*TestLspOptions `json:"p2mp"`
 	LspGroups []*LspGroup       `json:"lspGroup"`
@@ -111,7 +113,7 @@ type TestResult struct {
 
 type RouteResult struct {
 	Id      string        `json:"id"`
-	Name    string        `json:"name"`
+	Names   []string      `json:"names"`
 	Results []*TestResult `json:"results"`
 	LspItem LspItem       `json:"lsp"`
 }

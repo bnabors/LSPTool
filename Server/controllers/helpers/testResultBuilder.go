@@ -100,7 +100,7 @@ func (trb *TestResultBuilder) GetRouteResult(lspItem models.LspItem) *models.Rou
 	var res = trb.getGroupTestResults(lspItem)
 
 	// LSP
-	result := models.RouteResult{Results: []*models.TestResult{}, Id: lspItem.Id, Name: lspItem.Name, LspItem: lspItem}
+	result := models.RouteResult{Results: []*models.TestResult{}, Id: lspItem.Id, Names: []string{lspItem.Name}, LspItem: lspItem}
 
 	lspContent := models.LspContent{Bands: []*models.LspBand{}, Routes: []*models.LspRoute{}, Diagram: res.DiagramResult}
 
