@@ -113,15 +113,11 @@ class RouteItem extends React.Component {
 
     render() {
         let name = [];
-        if (typeof(this.props.data.names) === "array") {
-            for (let i = 0; i < this.props.data.names.length; i++) {
-                name.push(<span>this.props.data.name[i]</span>);
-                if (i + 1 < this.props.data.names.length) {
-                    name.push(<br/>);
-                }
+        for (let i = 0; i < this.props.data.names.length; i++) {
+            name.push(<span>{this.props.data.names[i]}</span>);
+            if (i + 1 < this.props.data.names.length) {
+                name.push(<br/>);
             }
-        } else {
-            name.push(this.props.data.names)
         }
         return (<a ref="test" className="routelinks border-right" onClick={this.clickHandler.bind(this)}
                    title={name}>{name}<div/></a>)

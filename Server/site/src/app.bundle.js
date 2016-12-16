@@ -45185,19 +45185,15 @@
 	        key: "render",
 	        value: function render() {
 	            var name = [];
-	            if (typeof this.props.data.names === "array") {
-	                for (var i = 0; i < this.props.data.names.length; i++) {
-	                    name.push(_react2.default.createElement(
-	                        "span",
-	                        null,
-	                        "this.props.data.name[i]"
-	                    ));
-	                    if (i + 1 < this.props.data.names.length) {
-	                        name.push(_react2.default.createElement("br", null));
-	                    }
+	            for (var i = 0; i < this.props.data.names.length; i++) {
+	                name.push(_react2.default.createElement(
+	                    "span",
+	                    null,
+	                    this.props.data.names[i]
+	                ));
+	                if (i + 1 < this.props.data.names.length) {
+	                    name.push(_react2.default.createElement("br", null));
 	                }
-	            } else {
-	                name.push(this.props.data.names);
 	            }
 	            return _react2.default.createElement(
 	                "a",
