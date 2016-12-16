@@ -18,6 +18,8 @@ export default class LspPanel extends React.Component {
 
     getSelected() {
         return {
+            ingress: this.props.ingress,
+            egress: this.props.egress,
             p2p: this.refs.p2p.getSelected(),
             p2mp: this.refs.p2mp.getSelected(),
             lspGroup: this.props.lspGroups

@@ -29160,7 +29160,9 @@
 	                if (this.props.LSPs.fetched) {
 	                    contentPanel = _react2.default.createElement(_LspPanel2.default, { ref: "lspPanel", p2pLSPs: this.props.LSPs.p2pLSPs,
 	                        p2mpLSPs: this.props.LSPs.p2mpLSPs, downLSPs: this.props.LSPs.downLSPs,
-	                        lspGroups: this.props.LSPs.lspGroups });
+	                        lspGroups: this.props.LSPs.lspGroups,
+	                        ingress: this.props.LSPs.routers.ingress,
+	                        egress: this.props.LSPs.routers.egress });
 	                    actionButton = _react2.default.createElement(
 	                        "button",
 	                        { className: "app-control-gradient", onClick: this.runTests.bind(this),
@@ -29195,7 +29197,7 @@
 	                            sendMessage: this.sendMessage.bind(this),
 	                            ingress_routers: this.props.routers.ingress_routers,
 	                            egress_routers: this.props.routers.egress_routers,
-	                            isEnabled: !this.state.result }),
+	                            isEnabled: !this.state.result && !this.props.LSPs.fetching }),
 	                        _react2.default.createElement(
 	                            "div",
 	                            { className: "scrollable" },
@@ -39831,6 +39833,8 @@
 	        key: "getSelected",
 	        value: function getSelected() {
 	            return {
+	                ingress: this.props.ingress,
+	                egress: this.props.egress,
 	                p2p: this.refs.p2p.getSelected(),
 	                p2mp: this.refs.p2mp.getSelected(),
 	                lspGroup: this.props.lspGroups
@@ -45180,10 +45184,26 @@
 	    }, {
 	        key: "render",
 	        value: function render() {
+	            var name = [];
+	            if (typeof this.props.data.names === "array") {
+	                for (var i = 0; i < this.props.data.names.length; i++) {
+	                    name.push(_react2.default.createElement(
+	                        "span",
+	                        null,
+	                        "this.props.data.name[i]"
+	                    ));
+	                    if (i + 1 < this.props.data.names.length) {
+	                        name.push(_react2.default.createElement("br", null));
+	                    }
+	                }
+	            } else {
+	                name.push(this.props.data.names);
+	            }
 	            return _react2.default.createElement(
 	                "a",
-	                { ref: "test", className: "routelinks border-right", onClick: this.clickHandler.bind(this), title: this.props.data.name },
-	                this.props.data.name,
+	                { ref: "test", className: "routelinks border-right", onClick: this.clickHandler.bind(this),
+	                    title: name },
+	                name,
 	                _react2.default.createElement("div", null)
 	            );
 	        }

@@ -99,7 +99,9 @@ export default class MainPage extends React.Component {
             if (this.props.LSPs.fetched) {
                 contentPanel = (<LspPanel ref="lspPanel" p2pLSPs={this.props.LSPs.p2pLSPs}
                                           p2mpLSPs={this.props.LSPs.p2mpLSPs} downLSPs={this.props.LSPs.downLSPs}
-                                          lspGroups={this.props.LSPs.lspGroups}/>);
+                                          lspGroups={this.props.LSPs.lspGroups}
+                                          ingress={this.props.LSPs.routers.ingress}
+                                          egress={this.props.LSPs.routers.egress}/>);
                 actionButton = (<button className="app-control-gradient" onClick={this.runTests.bind(this)}
                                         title="Run tests on selected LSPs">Run tests on selected LSPs</button>);
             } else if (this.props.LSPs.fetching) {
@@ -124,7 +126,7 @@ export default class MainPage extends React.Component {
                                     sendMessage={this.sendMessage.bind(this)}
                                     ingress_routers={this.props.routers.ingress_routers}
                                     egress_routers={this.props.routers.egress_routers}
-                                    isEnabled={!this.state.result}/>
+                                    isEnabled={!this.state.result && !this.props.LSPs.fetching}/>
                         <div className="scrollable">
                             {contentPanel}
                         </div>
