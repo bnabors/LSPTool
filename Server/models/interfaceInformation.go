@@ -33,6 +33,11 @@ type TrafficStatistics struct {
 	OutputBytes   string `xml:"output-bytes"`
 	InputPackets  string `xml:"input-packets"`
 	OutputPackets string `xml:"output-packets"`
+
+	InputBytesPerSecond    string `xml:"input-bps"`
+	OutputBytesPerSecond   string `xml:"output-bps"`
+	InputPacketsPerSecond  string `xml:"input-pps"`
+	OutputPacketsPerSecond string `xml:"output-pps"`
 }
 
 type InputErrorList struct {
@@ -84,10 +89,10 @@ func (obj InterfaceInformation) ToRouterStatisticsContent(router *Router) Router
 	statistics = append(statistics, &Statistics{Title: "Stats Last Cleared", Values: rows})
 
 	rows = []*StatisticsValue{}
-	AddValueRow(&rows, "BPS In", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.InputBytes))
-	AddValueRow(&rows, "BPS Out", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.OutputBytes))
-	AddValueRow(&rows, "PPS In", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.InputPackets))
-	AddValueRow(&rows, "PPS Out", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.OutputPackets))
+	AddValueRow(&rows, "BPS In", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.InputBytesPerSecond))
+	AddValueRow(&rows, "BPS Out", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.OutputBytesPerSecond))
+	AddValueRow(&rows, "PPS In", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.InputPacketsPerSecond))
+	AddValueRow(&rows, "PPS Out", helpers.ParceNumberAndLocalize(obj.TrafficStatistics.OutputPacketsPerSecond))
 	statistics = append(statistics, &Statistics{Title: "Traffic Statistics", Values: rows})
 
 	rows = []*StatisticsValue{}

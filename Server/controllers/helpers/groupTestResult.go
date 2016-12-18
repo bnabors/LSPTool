@@ -61,10 +61,10 @@ func (gtr *GroupTestResult) BuildDiagrammResult() {
 			Name:          hostStart.Router.Name,
 			Ip:            destinationBack,
 			Interface:     link.Backward.LogicalInterfaceName,
-			InputBytes:    backwardStatistics.InputBytes,
-			OutputBytes:   backwardStatistics.OutputBytes,
-			InputPackets:  backwardStatistics.InputPackets,
-			OutputPackets: backwardStatistics.OutputPackets,
+			InputBytes:    backwardStatistics.InputBytesPerSecond,
+			OutputBytes:   backwardStatistics.OutputBytesPerSecond,
+			InputPackets:  backwardStatistics.InputPacketsPerSecond,
+			OutputPackets: backwardStatistics.OutputPacketsPerSecond,
 		}
 
 		router2 := models.DiaRouter{
@@ -72,10 +72,10 @@ func (gtr *GroupTestResult) BuildDiagrammResult() {
 			Name:          hostFinish.Router.Name,
 			Ip:            destination,
 			Interface:     link.Forward.LogicalInterfaceName,
-			InputBytes:    forwardStatistics.InputBytes,
-			OutputBytes:   forwardStatistics.OutputBytes,
-			InputPackets:  forwardStatistics.InputPackets,
-			OutputPackets: forwardStatistics.OutputPackets,
+			InputBytes:    forwardStatistics.InputBytesPerSecond,
+			OutputBytes:   forwardStatistics.OutputBytesPerSecond,
+			InputPackets:  forwardStatistics.InputPacketsPerSecond,
+			OutputPackets: forwardStatistics.OutputPacketsPerSecond,
 		}
 
 		gtr.DiagramResult.Paths = append(gtr.DiagramResult.Paths, &models.DiaPath{Router1: router1, Router2: router2, BaseIp: baseIp})
