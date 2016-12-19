@@ -26,7 +26,7 @@ func RunTests(o models.TestOptions) (*models.TestResults, error) {
 
 	if isLspChanged(o.P2P, o.LspGroups, lspCollections.P2P, lspCollections.LspGroups) ||
 		isLspChanged(o.P2MP, o.LspGroups, lspCollections.P2MP, lspCollections.LspGroups) {
-		return nil, errors.New("Path LSP changed. Determine repeatly")
+		return nil, errors.New("LSP has been changed. Please determine LSPs again.")
 	}
 
 	builder := controllerHelper.TestResultBuilder{}
