@@ -47,6 +47,8 @@ func LoadInterfaceInfo(sm *sessions.SessionsManager, address string, interfaceNa
 	}
 
 	result := models.ParseInterfaceInformation([]byte(reply.Data))
+
+	utils.ConvertToJson(result)
 	return result, nil
 }
 
@@ -71,6 +73,7 @@ func LoadAggregateInterfaceInfo(sm *sessions.SessionsManager, address string, in
 	result := models.ParseAgregateInterfaceInformation([]byte(reply.Data))
 	result.SubInterface, err = getSubInterfaceInfo(sm, address, result.SubInterfaceNames)
 
+	utils.ConvertToJson(result)
 	return result, err
 }
 
