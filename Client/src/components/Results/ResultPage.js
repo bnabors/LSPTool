@@ -88,6 +88,9 @@ export default class ResultPage extends React.Component {
     sendRequest(options, action) {
         let data = {
             lsp: this.props.result.currentResult.lsp,
+            ingress: this.props.LSPs.routers.ingress,
+            egress: this.props.LSPs.routers.egress,
+            names:this.props.result.currentResult.names,
             groupRouters: this.props.results.testResults.groupRouters,
             options: JSON.stringify(options).toString()
         };
