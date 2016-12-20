@@ -24,8 +24,9 @@ func RunTests(o models.TestOptions) (*models.TestResults, error) {
 		return nil, err
 	}
 
-	if isLspChanged(o.P2P, o.LspGroups, lspCollections.P2P, lspCollections.LspGroups) ||
-		isLspChanged(o.P2MP, o.LspGroups, lspCollections.P2MP, lspCollections.LspGroups) {
+	var checker = controllerHelper.RouteChecker{NewGroups: lspCollections.LspGroups, OldGroups: o.LspGroups}
+
+	if checker.IsLspGroupChanged(o.P2P, lspCollections.P2P) || checker.IsLspGroupChanged(o.P2MP, lspCollections.P2MP) {
 		return nil, errors.New("LSP has been changed. Please determine LSPs again.")
 	}
 
@@ -115,58 +116,4 @@ func GetLspItemTestResult(lspItem models.LspItem, lspGroups []*models.LspGroup) 
 	builder.AddLspBand(lspItem)
 
 	return builder.GetRouteResult(lspItem), nil
-}
-
-func isLspChanged(testedLsps []*models.TestLspOptions, newGroups []*models.LspGroup, oldLsps []*models.LspItem, oldGroups []*models.LspGroup) bool {
-	for _, testLsp := range testedLsps {
-		if !testLsp.IsSelected {
-			continue
-		}
-
-		var oldLsp *models.LspItem
-
-		for _, lsp := range oldLsps {
-			if lsp.Name == testLsp.LspItem.Name {
-				oldLsp = lsp
-				break
-			}
-		}
-
-		if oldLsp == nil {
-			return true
-		}
-
-		newRro := GetRroByGroupId(newGroups, testLsp.LspItem.GroupId)
-		oldRro := GetRroByGroupId(oldGroups, oldLsp.GroupId)
-
-		if isDifferentRro(newRro, oldRro) {
-			return true
-		}
-	}
-
-	return false
-}
-
-func isDifferentRro(rroA []string, rroB []string) bool {
-	if len(rroA) != len(rroB) {
-		return true
-	}
-
-	for pos := 0; pos < len(rroA); pos++ {
-		if rroA[pos] != rroB[pos] {
-			return true
-		}
-	}
-
-	return false
-}
-
-func GetRroByGroupId(lspGroups []*models.LspGroup, groupId string) []string {
-	for _, lspGroup := range lspGroups {
-		if (*lspGroup).Id == groupId {
-			return (*lspGroup).ReceivedRro
-		}
-	}
-
-	return []string{}
 }

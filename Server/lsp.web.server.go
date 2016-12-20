@@ -229,7 +229,7 @@ func refreshLspHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	lspLogger.Debug(options.LspGroups)
 
-	routeResult, err := controller.GetLspItemTestResult(requestModel.LspItem, options.LspGroups)
+	routeResult, err := controller.RefreshLsp(requestModel, options.LspGroups)
 	if err != nil {
 		sendErrorResponse(w, "MPLS Error: \""+err.Error()+"\"")
 		return

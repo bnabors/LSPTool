@@ -203,7 +203,10 @@ func (obj *RouterStatisticsContent) DetectErrors() {
 /* Base Request|Response */
 
 type RequestModel struct {
+	Ingress         Router             `json:"ingress"`
+	Egress          Router             `json:"egress"`
 	LspItem         LspItem            `json:"lsp"`
+	LspNames        []string           `json:"names"`
 	LspGroupRouters []*LspGroupRouters `json:"groupRouters"`
 	Options         string             `json:"options"`
 }

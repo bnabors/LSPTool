@@ -20,6 +20,49 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
+func RefreshLsp(requestModel models.RequestModel, oldLspGroups []*models.LspGroup) (*models.RouteResult, error) {
+	var determineOptions = models.DetermineOptions{Ingress: requestModel.Ingress, Egress: requestModel.Egress}
+
+	lspCollections, err := DetermineLsps(determineOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	if isLspChanged(lspCollections, &requestModel.LspItem, requestModel.LspNames, oldLspGroups) {
+		return nil, errors.New("LSP has been changed. Please determine LSPs again.")
+	}
+
+	return GetLspItemTestResult(requestModel.LspItem, oldLspGroups)
+}
+
+func isLspChanged(newLspCollection models.LspCollection, oldLsp *models.LspItem, oldLspNames []string, oldLspGroups []*models.LspGroup) bool {
+	var checker = controllerHelper.RouteChecker{NewGroups: newLspCollection.LspGroups, OldGroups: oldLspGroups}
+
+	for _, oldLspName := range oldLspNames {
+		newLspP2P := controllerHelper.GetLspByName(oldLspName, newLspCollection.P2P)
+		if newLspP2P != nil {
+			if checker.IsLspChanged(newLspP2P, oldLsp) {
+				return true
+			} else {
+				continue
+			}
+		}
+
+		newLspP2MP := controllerHelper.GetLspByName(oldLspName, newLspCollection.P2MP)
+		if newLspP2MP != nil {
+			if checker.IsLspChanged(newLspP2MP, oldLsp) {
+				return true
+			} else {
+				continue
+			}
+		}
+
+		return true
+	}
+
+	return false
+}
+
 // RefreshInterfaceInfo - get updated interface information
 func RefreshInterfaceInfo(router models.Router, interfaceName string) (models.RouterStatisticsContent, error) {
 	if interfaceName == "pfe" {
