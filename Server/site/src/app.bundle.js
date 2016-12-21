@@ -48032,7 +48032,7 @@
 	    if (routerInterface.innerInterface === null) {
 	        content.name = result.name;
 	        content.statistics = result.statistics;
-	        content.innerInterface = result.innerInterface;
+	        content.sub_interfaces = result.sub_interfaces;
 	        content.isError = result.isError;
 	        return true;
 	    }
