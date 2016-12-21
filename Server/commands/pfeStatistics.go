@@ -8,29 +8,23 @@
 package command
 
 import (
-	"bytes"
 	"errors"
 	"strings"
-	"time"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
+)
 
-	"golang.org/x/crypto/ssh"
+var (
+	sshSessionManager = utils.NewSSHSessionManager()
 )
 
 func GetPfeStatistic(host models.Router) (models.PfeStatistic, error) {
 	lspLogger.Infoln("command getPfeStatistic router: " + host.Name)
 
 	getPfeStatisticCommamd := "show pfe statistics traffic"
-	client, err := createSSHClient(config.LspConfig.User, config.LspConfig.Password, host)
-	if err != nil {
-		return models.PfeStatistic{}, errors.New(err.Error() + "\r\n Information: command " + getPfeStatisticCommamd)
-	}
-	defer client.Close()
-
-	commandResult, err := runCommand(client, getPfeStatisticCommamd)
+	commandResult, err := sshSessionManager.RunSSHCommand(host, getPfeStatisticCommamd)
 	if err != nil {
 		return models.PfeStatistic{}, errors.New(err.Error() + "\r\n Information: command " + getPfeStatisticCommamd)
 	}
@@ -39,14 +33,9 @@ func GetPfeStatistic(host models.Router) (models.PfeStatistic, error) {
 }
 
 func ClearPfeStatistic(host models.Router) error {
+	lspLogger.Infoln("command clearPfeStatistic router: " + host.Name)
 	clearPfeStatisticCommamd := "clear pfe statistics traffic"
-	client, err := createSSHClient(config.LspConfig.User, config.LspConfig.Password, host)
-	if err != nil {
-		return errors.New(err.Error() + "\r\n Information: command " + clearPfeStatisticCommamd)
-	}
-	defer client.Close()
-
-	_, err = runCommand(client, clearPfeStatisticCommamd)
+	_, err := sshSessionManager.RunSSHCommand(host, clearPfeStatisticCommamd)
 	if err != nil {
 		return errors.New(err.Error() + "\r\n Information: command " + clearPfeStatisticCommamd)
 	}
@@ -113,57 +102,4 @@ func getValueFromLine(line string) string {
 	}
 
 	return strings.TrimSpace(pair[1])
-}
-
-func createSSHClient(user string, password string, router models.Router) (*ssh.Client, error) {
-	cfg := &ssh.ClientConfig{
-		User: user,
-		Auth: []ssh.AuthMethod{
-			ssh.Password(password),
-		},
-		Timeout: time.Duration(config.LspConfig.SSHConnectionTimout) * time.Second,
-	}
-	address := router.GetAddress()
-
-	var finalAddress = ""
-	if config.LspConfig.UseProxy {
-		finalAddress = address
-	} else if strings.Contains(address, ":") {
-		finalAddress = address
-	} else {
-		finalAddress = address + ":22"
-	}
-
-	client, err := ssh.Dial("tcp", finalAddress, cfg)
-	if err != nil {
-		lspLogger.Errorf("SshCommand Error: %v", err)
-		return nil, err
-	}
-	return client, nil
-}
-
-func runCommand(client *ssh.Client, command string) (string, error) {
-	session, err := client.NewSession()
-	if err != nil {
-		lspLogger.Errorf("SshCommand Error: %v", err)
-		return "", err
-	}
-	defer session.Close()
-
-	var b bytes.Buffer
-	session.Stdout = &b
-	if err := session.Run(command); err != nil {
-		lspLogger.Errorf("SshCommand Error: %v", err)
-		return "", err
-	}
-	return b.String(), nil
-}
-
-func sshTest() {
-	router := models.Router{Name: "r1", Ip: "172.31.0.1", ProxyIp: "127.0.0.1:2001"}
-
-	var pfeStatistics, _ = GetPfeStatistic(router)
-	var content = pfeStatistics.ToRouterStatisticsContent(&router)
-
-	lspLogger.Debug(content)
 }

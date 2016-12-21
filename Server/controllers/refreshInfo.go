@@ -74,7 +74,7 @@ func RefreshInterfaceInfo(router models.Router, interfaceName string) (models.Ro
 
 	var statistic models.IRouterStatistics
 	var err error
-	if strings.Index(interfaceName, "ae") == 0 {
+	if isAEInterface(interfaceName) {
 		statistic, err = command.LoadAggregateInterfaceInfo(&sessionsManager, router.GetAddress(), interfaceName)
 	} else {
 		statistic, err = command.LoadInterfaceInfo(&sessionsManager, router.GetAddress(), interfaceName)
@@ -86,12 +86,24 @@ func RefreshInterfaceInfo(router models.Router, interfaceName string) (models.Ro
 	return statistic.ToRouterStatisticsContent(&router), nil
 }
 
-// ClearAndRefreshInterfaceInfo - clear and get updated interface inforamtion
+// ClearAndRefreshInterfaceInfo - clear and get updated interface information
 func ClearAndRefreshInterfaceInfo(router models.Router, interfaceName string) (models.RouterStatisticsContent, error) {
 	if interfaceName == "pfe" {
 		return clearAndRefreshPfeStatistic(router)
 	}
 
+	if isAEInterface(interfaceName) {
+		// clear SubInterfaces for AgregateInterface
+		statistic, err := RefreshInterfaceInfo(router, interfaceName)
+		if err != nil {
+			return models.RouterStatisticsContent{}, err
+		}
+		for _, subInterface := range statistic.SubInterfaces {
+			if err := command.ClearInterfacesStatistics(router.GetAddress(), subInterface.Name); err != nil {
+				return models.RouterStatisticsContent{}, err
+			}
+		}
+	}
 	if err := command.ClearInterfacesStatistics(router.GetAddress(), interfaceName); err != nil {
 		return models.RouterStatisticsContent{}, err
 	}
@@ -122,6 +134,10 @@ func getStatisticsContent(router models.Router, interfaceNames []*string, statis
 		contents[index] = routerStatistic
 	}
 	return models.TestResult{Id: strconv.Itoa(router.Id), Name: router.Name, Type: 2, Content: contents, IsError: isError}, nil
+}
+
+func isAEInterface(interfaceName string) bool {
+	return strings.Index(interfaceName, "ae") == 0
 }
 
 // refreshPfeStatistic - get updated interface information
