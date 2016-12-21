@@ -8,11 +8,13 @@
 package controller
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
 
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/commands"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
 )
 
@@ -26,6 +28,8 @@ func DetermineLsps(o models.DetermineOptions) (models.LspCollection, error) {
 	}
 
 	for _, mplsInfo := range mplsLspInfos {
+		lspLogger.Debug(fmt.Sprintf("ReceivedRro: %v => %v", mplsInfo.Name, mplsInfo.MplsLspPath.ReceivedRro))
+
 		var path = filterIpAdreses(mplsInfo.MplsLspPath.ReceivedRro)
 
 		var item = models.LspItem{

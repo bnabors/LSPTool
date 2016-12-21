@@ -40,5 +40,7 @@ func LoadRouteInfo(sm *sessions.SessionsManager, address string, destination str
 		return models.RouteInformation{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
+	lspLogger.Debug(reply.Data)
+
 	return models.ParseRouteInformation([]byte(reply.Data)), nil
 }

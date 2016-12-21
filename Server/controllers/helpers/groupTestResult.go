@@ -53,14 +53,14 @@ func (gtr *GroupTestResult) BuildDiagrammResult() {
 
 		var baseIp, destinationBack, destination, _ = getAdresses(link.RtDestination, link.Backward.Destination, link.Forward.Destination)
 
-		var backwardStatistics = link.Backward.InterfaceInfo.GetTrafficStatistics()
 		var forwardStatistics = link.Forward.InterfaceInfo.GetTrafficStatistics()
+		var backwardStatistics = link.Backward.InterfaceInfo.GetTrafficStatistics()
 
 		router1 := models.DiaRouter{
 			Id:            hostStart.Router.Name,
 			Name:          hostStart.Router.Name,
 			Ip:            destinationBack,
-			Interface:     link.Backward.LogicalInterfaceName,
+			Interface:     link.Forward.LogicalInterfaceName,
 			InputBytes:    forwardStatistics.InputBytesPerSecond,
 			OutputBytes:   forwardStatistics.OutputBytesPerSecond,
 			InputPackets:  forwardStatistics.InputPacketsPerSecond,
@@ -71,7 +71,7 @@ func (gtr *GroupTestResult) BuildDiagrammResult() {
 			Id:            hostFinish.Router.Name,
 			Name:          hostFinish.Router.Name,
 			Ip:            destination,
-			Interface:     link.Forward.LogicalInterfaceName,
+			Interface:     link.Backward.LogicalInterfaceName,
 			InputBytes:    backwardStatistics.InputBytesPerSecond,
 			OutputBytes:   backwardStatistics.OutputBytesPerSecond,
 			InputPackets:  backwardStatistics.InputPacketsPerSecond,

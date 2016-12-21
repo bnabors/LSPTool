@@ -19,22 +19,41 @@ type RouteInformation struct {
 }
 
 type Rt struct {
-	RtDestination string  `xml:"rt-destination"`
-	RtEntry       RtEntry `xml:"rt-entry"`
+	RtDestination string    `xml:"rt-destination"`
+	RtEntries     []RtEntry `xml:"rt-entry"`
 }
 
 type RtEntry struct {
-	ProtocolName string `xml:"protocol-name"`
-	Age          string `xml:"age"`
-	Nh           Nh     `xml:"nh"`
+	ProtocolName  string      `xml:"protocol-name"`
+	Age           string      `xml:"age"`
+	Nhs           []Nh        `xml:"nh"`
+	CurrentActive *ExistField `xml:"current-active"`
 }
 
 type Nh struct {
-	Via string `xml:"via"`
+	SelectedNextHop *ExistField `xml:"selected-next-hop"`
+	Via             string      `xml:"via"`
+}
+
+type ExistField struct {
 }
 
 func (data RouteInformation) GetInterfaceName() string {
-	return data.Rt.RtEntry.Nh.Via
+	for _, rtEntry := range data.Rt.RtEntries {
+		if rtEntry.CurrentActive == nil {
+			continue
+		}
+
+		for _, nh := range rtEntry.Nhs {
+			if nh.SelectedNextHop == nil {
+				continue
+			}
+
+			return nh.Via
+		}
+	}
+
+	return ""
 }
 
 func ParseRouteInformation(xmlText []byte) RouteInformation {

@@ -46,6 +46,8 @@ func LoadInterfaceInfo(sm *sessions.SessionsManager, address string, interfaceNa
 		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
+	lspLogger.Debug(reply.Data)
+
 	result := models.ParseInterfaceInformation([]byte(reply.Data))
 
 	utils.ConvertToJson(result)

@@ -59,7 +59,7 @@ func (trb *TestResultBuilder) TryRunTest(lspItem models.LspItem) error {
 
 	for index, nextIp := range lspGroup.ReceivedRro {
 		// Get forwards route info
-		neighborId, rtDestination, forwardTestResult, err := trb.runLinkDirectTests(currentIp, nextIp, testResult)
+		neighborId, rtDestination, forwardTestResult, localIp, err := trb.runLinkDirectTests(currentIp, nextIp, testResult)
 		if err != nil {
 			return err
 		}
@@ -71,7 +71,7 @@ func (trb *TestResultBuilder) TryRunTest(lspItem models.LspItem) error {
 		}
 
 		// Get backwards route info
-		_, _, backwardTestResult, err := trb.runLinkDirectTests(currentIp, routerAddress, testResult)
+		_, _, backwardTestResult, _, err := trb.runLinkDirectTests(currentIp, localIp, testResult)
 		if err != nil {
 			return err
 		}
@@ -231,7 +231,7 @@ func (trb *TestResultBuilder) runHostTests(routerAddress string, isIngress bool,
 	return router.GetAddress(), nil
 }
 
-func (trb *TestResultBuilder) runLinkDirectTests(currentIp string, nextIp string, res *GroupTestResult) (neighborId string, rtDestination string, result LinkDirectTestResult, err error) {
+func (trb *TestResultBuilder) runLinkDirectTests(currentIp string, nextIp string, res *GroupTestResult) (neighborId string, rtDestination string, result LinkDirectTestResult, localIp string, err error) {
 	result = LinkDirectTestResult{}
 
 	rtDestination, interfaceName, interfaceInfo, err := trb.getInterfaceInfo(currentIp, nextIp)
@@ -243,6 +243,8 @@ func (trb *TestResultBuilder) runLinkDirectTests(currentIp string, nextIp string
 		err = errors.New("cannot get interface information")
 		return
 	}
+
+	localIp = interfaceInfo.GetLocalIp(interfaceName)
 
 	result.LogicalInterfaceName = interfaceName
 	result.InterfaceInfo = interfaceInfo

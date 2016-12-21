@@ -35,6 +35,8 @@ func GetOspfNeighbor(sm *sessions.SessionsManager, address string, interfaceName
 		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
+	lspLogger.Debug(reply.Data)
+
 	answer := models.ParseOspfNeighborInformation([]byte(reply.Data))
 
 	return answer.GetOspfNeighbor(interfaceName), nil

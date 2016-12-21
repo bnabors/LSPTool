@@ -11,4 +11,5 @@ type IRouterStatistics interface {
 	ToRouterStatisticsContent(router *Router) RouterStatisticsContent
 	GetName() string
 	GetTrafficStatistics() TrafficStatistics
+	GetLocalIp(logicalInterfaceName string) string
 }

@@ -16,16 +16,17 @@ import (
 )
 
 type InterfaceInformation struct {
-	XMLName           xml.Name          `xml:"interface-information"`
-	Name              string            `xml:"physical-interface>name"`
-	Bandwidth         string            `xml:"physical-interface>speed"`
-	LastFlapped       string            `xml:"physical-interface>interface-flapped"`
-	StatsLastCleared  string            `xml:"physical-interface>statistics-cleared"`
-	TrafficStatistics TrafficStatistics `xml:"physical-interface>traffic-statistics"`
-	InputErrorList    InputErrorList    `xml:"physical-interface>input-error-list"`
-	OutputErrorList   OutputErrorList   `xml:"physical-interface>output-error-list"`
-	QueueCounters     QueueCounters     `xml:"physical-interface>queue-counters"`
-	PcsStatistics     PcsStatistics     `xml:"physical-interface>ethernet-pcs-statistics"`
+	XMLName           xml.Name           `xml:"interface-information"`
+	Name              string             `xml:"physical-interface>name"`
+	Bandwidth         string             `xml:"physical-interface>speed"`
+	LastFlapped       string             `xml:"physical-interface>interface-flapped"`
+	StatsLastCleared  string             `xml:"physical-interface>statistics-cleared"`
+	TrafficStatistics TrafficStatistics  `xml:"physical-interface>traffic-statistics"`
+	InputErrorList    InputErrorList     `xml:"physical-interface>input-error-list"`
+	OutputErrorList   OutputErrorList    `xml:"physical-interface>output-error-list"`
+	QueueCounters     QueueCounters      `xml:"physical-interface>queue-counters"`
+	PcsStatistics     PcsStatistics      `xml:"physical-interface>ethernet-pcs-statistics"`
+	LogicalInterfaces []LogicalInterface `xml:"physical-interface>logical-interface"`
 }
 
 type TrafficStatistics struct {
@@ -157,6 +158,10 @@ func (obj InterfaceInformation) GetName() string {
 
 func (obj InterfaceInformation) GetTrafficStatistics() TrafficStatistics {
 	return obj.TrafficStatistics
+}
+
+func (obj InterfaceInformation) GetLocalIp(logicalInterfaceName string) string {
+	return GetLocalIp(obj.LogicalInterfaces, logicalInterfaceName)
 }
 
 func ParseInterfaceInformation(xmlText []byte) InterfaceInformation {

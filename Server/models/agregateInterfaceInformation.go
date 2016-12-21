@@ -34,6 +34,8 @@ type (
 
 		QueueCounters []QueueCounter `xml:"physical-interface>queue-counters"`
 		//EgressQueueCounter  QueueCounter `xml:"physical-interface>queue-counters"`
+
+		LogicalInterfaces []LogicalInterface `xml:"physical-interface>logical-interface"`
 	}
 
 	InputError struct {
@@ -203,4 +205,8 @@ func (obj AgregateInterfaceInformation) GetName() string {
 
 func (obj AgregateInterfaceInformation) GetTrafficStatistics() TrafficStatistics {
 	return obj.TrafficStatistics
+}
+
+func (obj AgregateInterfaceInformation) GetLocalIp(logicalInterfaceName string) string {
+	return GetLocalIp(obj.LogicalInterfaces, logicalInterfaceName)
 }
