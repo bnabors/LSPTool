@@ -83,7 +83,7 @@ func (trb *TestResultBuilder) TryRunTest(lspItem models.LspItem) error {
 	}
 
 	testResult.BuildDiagrammResult()
-	testResult.BuildIcmpResult()
+	testResult.BuildIcmpResult(&trb.SessionsManager)
 	return nil
 }
 

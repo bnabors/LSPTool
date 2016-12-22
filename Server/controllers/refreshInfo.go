@@ -174,7 +174,10 @@ func RefreshPing(requestModel models.RequestModel, options models.RefreshPingOpt
 	var routerLeft = routers[0]
 	var routerRight = routers[1]
 
-	return controllerHelper.BuildIcmpResult(*routerLeft, *routerRight)
+	sessionsManager := sessions.SessionsManager{}
+	defer sessionsManager.CloseAllSessions()
+
+	return controllerHelper.BuildIcmpResult(&sessionsManager, *routerLeft, *routerRight)
 }
 
 // RefreshPings get icmp results by route
@@ -204,5 +207,8 @@ func RefreshPings(optionsId string, requestModel models.RequestModel) (models.Te
 		routers = append(routers, router)
 	}
 
-	return controllerHelper.BuildIcmpResultByRouters(optionsId, routers)
+	sessionsManager := sessions.SessionsManager{}
+	defer sessionsManager.CloseAllSessions()
+
+	return controllerHelper.BuildIcmpResultByRouters(&sessionsManager, optionsId, routers)
 }

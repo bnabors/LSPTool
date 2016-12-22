@@ -14,10 +14,11 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
-func Ping(source models.Router, host models.Router) (models.PingResult, error) {
+func Ping(sm *sessions.SessionsManager, source models.Router, host models.Router) (models.PingResult, error) {
 
 	var requestPattern = `<ping>
 	<count>%d</count> 
@@ -32,12 +33,11 @@ func Ping(source models.Router, host models.Router) (models.PingResult, error) {
 	commandDescription := "command ping from: " + source.Name + " to: " + host.Name + " request: " + request
 	lspLogger.Infoln(commandDescription)
 
-	session, err := utils.CreateSession(source.GetAddress())
+	session, err := sm.GetSession(source.GetAddress())
 	if err != nil {
 		lspLogger.Error(err, request)
 		return models.PingResult{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
-	defer session.Close()
 
 	reply, err := utils.MakeNetconfRequest(session, request)
 	if err != nil {
@@ -46,13 +46,4 @@ func Ping(source models.Router, host models.Router) (models.PingResult, error) {
 	}
 
 	return models.ParsePing([]byte(reply.Data)), nil
-}
-
-func pingTest() {
-	sourceRouter := models.Router{Id: 1, Name: "r1", Ip: "172.31.0.1", ProxyIp: "127.0.0.1:2001"}
-	hostRouter := models.Router{Id: 2, Name: "r2", Ip: "172.31.0.2", ProxyIp: "127.0.0.1:2002"}
-
-	pingResult, _ := Ping(sourceRouter, hostRouter)
-	pingResult.Print()
-	lspLogger.Debug(pingResult.ToIcmpResult(sourceRouter, hostRouter))
 }
