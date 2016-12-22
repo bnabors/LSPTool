@@ -32,7 +32,6 @@ func RunTests(o models.TestOptions) (*models.TestResults, error) {
 
 	builder := controllerHelper.TestResultBuilder{}
 	builder.Init(o.LspGroups)
-	defer builder.Dispose()
 
 	for _, testLsp := range o.P2P {
 		if !testLsp.IsSelected {
@@ -108,7 +107,6 @@ func RunTests(o models.TestOptions) (*models.TestResults, error) {
 func GetLspItemTestResult(lspItem models.LspItem, lspGroups []*models.LspGroup) (*models.RouteResult, error) {
 	builder := controllerHelper.TestResultBuilder{}
 	builder.Init(lspGroups)
-	defer builder.Dispose()
 
 	if err := builder.TryRunTest(lspItem); err != nil {
 		return nil, err

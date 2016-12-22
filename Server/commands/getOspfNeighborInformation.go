@@ -12,24 +12,17 @@ import (
 
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
-func GetOspfNeighbor(sm *sessions.SessionsManager, address string, interfaceName string) (*models.OspfNeighbor, error) {
+func GetOspfNeighbor(address string, interfaceName string) (*models.OspfNeighbor, error) {
 	var request = `<get-ospf-neighbor-information>
 </get-ospf-neighbor-information>
 `
 	commandDescription := "command getOspfNeighbor address: " + address + " interfaceName: " + interfaceName
 	lspLogger.Infoln(commandDescription)
 
-	session, err := sm.GetSession(address)
-	if err != nil {
-		lspLogger.Error(err, request)
-		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
-	}
-
-	reply, err := utils.MakeNetconfRequest(session, request)
+	reply, err := utils.SshSessionManager.DoNetconfRequest(address, request)
 	if err != nil {
 		lspLogger.Error(err, request)
 		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)

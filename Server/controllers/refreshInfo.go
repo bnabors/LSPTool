@@ -16,7 +16,6 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/commands"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/controllers/helpers"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
@@ -69,15 +68,12 @@ func RefreshInterfaceInfo(router models.Router, interfaceName string) (models.Ro
 		return refreshPfeStatistic(router)
 	}
 
-	sessionsManager := sessions.SessionsManager{}
-	defer sessionsManager.CloseAllSessions()
-
 	var statistic models.IRouterStatistics
 	var err error
 	if isAEInterface(interfaceName) {
-		statistic, err = command.LoadAggregateInterfaceInfo(&sessionsManager, router.GetAddress(), interfaceName)
+		statistic, err = command.LoadAggregateInterfaceInfo(router.GetAddress(), interfaceName)
 	} else {
-		statistic, err = command.LoadInterfaceInfo(&sessionsManager, router.GetAddress(), interfaceName)
+		statistic, err = command.LoadInterfaceInfo(router.GetAddress(), interfaceName)
 	}
 
 	if err != nil {
@@ -174,10 +170,7 @@ func RefreshPing(requestModel models.RequestModel, options models.RefreshPingOpt
 	var routerLeft = routers[0]
 	var routerRight = routers[1]
 
-	sessionsManager := sessions.SessionsManager{}
-	defer sessionsManager.CloseAllSessions()
-
-	return controllerHelper.BuildIcmpResult(&sessionsManager, *routerLeft, *routerRight)
+	return controllerHelper.BuildIcmpResult(*routerLeft, *routerRight)
 }
 
 // RefreshPings get icmp results by route
@@ -207,8 +200,5 @@ func RefreshPings(optionsId string, requestModel models.RequestModel) (models.Te
 		routers = append(routers, router)
 	}
 
-	sessionsManager := sessions.SessionsManager{}
-	defer sessionsManager.CloseAllSessions()
-
-	return controllerHelper.BuildIcmpResultByRouters(&sessionsManager, optionsId, routers)
+	return controllerHelper.BuildIcmpResultByRouters(optionsId, routers)
 }

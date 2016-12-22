@@ -26,14 +26,7 @@ func ClearInterfacesStatistics(address string, interfaceName string) error {
 
 	var request = fmt.Sprintf(requestPattern, interfaceName)
 
-	session, err := utils.CreateSession(address)
-	if err != nil {
-		lspLogger.Error(err, request)
-		return errors.New(err.Error() + "\r\n Information: " + commandDescription)
-	}
-	defer session.Close()
-
-	_, err = utils.MakeNetconfRequest(session, request)
+	_, err := utils.SshSessionManager.DoNetconfRequest(address, request)
 	if err != nil {
 		lspLogger.Error(err, request)
 		return errors.New(err.Error() + "\r\n Information: " + commandDescription)

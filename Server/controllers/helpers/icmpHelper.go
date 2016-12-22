@@ -10,12 +10,11 @@ package controllerHelper
 import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/commands"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
 )
 
 // BuildIcmpResult make icmp result between two routers
-func BuildIcmpResult(sm *sessions.SessionsManager, routerLeft models.Router, routerRight models.Router) (models.IcmpResult, error) {
-	var pingResult, err = command.Ping(sm, routerLeft, routerRight)
+func BuildIcmpResult(routerLeft models.Router, routerRight models.Router) (models.IcmpResult, error) {
+	var pingResult, err = command.Ping(routerLeft, routerRight)
 	if err != nil {
 		return models.IcmpResult{}, err
 	}
@@ -23,7 +22,7 @@ func BuildIcmpResult(sm *sessions.SessionsManager, routerLeft models.Router, rou
 }
 
 // BuildIcmpResultByRouters make icmp results by route
-func BuildIcmpResultByRouters(sm *sessions.SessionsManager, optionsId string, routers []*models.Router) (models.TestResult, error) {
+func BuildIcmpResultByRouters(optionsId string, routers []*models.Router) (models.TestResult, error) {
 	content := []*models.IcmpResult{}
 
 	isError := false
@@ -32,7 +31,7 @@ func BuildIcmpResultByRouters(sm *sessions.SessionsManager, optionsId string, ro
 		var routerLeft = routers[index-1]
 		var routerRight = routers[index]
 
-		var icmpResult, err = BuildIcmpResult(sm, *routerLeft, *routerRight)
+		var icmpResult, err = BuildIcmpResult(*routerLeft, *routerRight)
 		if err != nil {
 			return models.TestResult{}, err
 		}

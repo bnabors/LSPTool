@@ -14,11 +14,10 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
-func Ping(sm *sessions.SessionsManager, source models.Router, host models.Router) (models.PingResult, error) {
+func Ping(source models.Router, host models.Router) (models.PingResult, error) {
 
 	var requestPattern = `<ping>
 	<count>%d</count> 
@@ -33,13 +32,7 @@ func Ping(sm *sessions.SessionsManager, source models.Router, host models.Router
 	commandDescription := "command ping from: " + source.Name + " to: " + host.Name + " request: " + request
 	lspLogger.Infoln(commandDescription)
 
-	session, err := sm.GetSession(source.GetAddress())
-	if err != nil {
-		lspLogger.Error(err, request)
-		return models.PingResult{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
-	}
-
-	reply, err := utils.MakeNetconfRequest(session, request)
+	reply, err := utils.SshSessionManager.DoNetconfRequest(source.GetAddress(), request)
 	if err != nil {
 		lspLogger.Error(err, request)
 		return models.PingResult{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)

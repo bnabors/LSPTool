@@ -16,15 +16,11 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
-var (
-	sshSessionManager = utils.NewSSHSessionManager()
-)
-
 func GetPfeStatistic(host models.Router) (models.PfeStatistic, error) {
 	lspLogger.Infoln("command getPfeStatistic router: " + host.Name)
 
 	getPfeStatisticCommamd := "show pfe statistics traffic"
-	commandResult, err := sshSessionManager.RunSSHCommand(host, getPfeStatisticCommamd)
+	commandResult, err := utils.SshSessionManager.RunSSHCommand(host, getPfeStatisticCommamd)
 	if err != nil {
 		return models.PfeStatistic{}, errors.New(err.Error() + "\r\n Information: command " + getPfeStatisticCommamd)
 	}
@@ -35,7 +31,7 @@ func GetPfeStatistic(host models.Router) (models.PfeStatistic, error) {
 func ClearPfeStatistic(host models.Router) error {
 	lspLogger.Infoln("command clearPfeStatistic router: " + host.Name)
 	clearPfeStatisticCommamd := "clear pfe statistics traffic"
-	_, err := sshSessionManager.RunSSHCommand(host, clearPfeStatisticCommamd)
+	_, err := utils.SshSessionManager.RunSSHCommand(host, clearPfeStatisticCommamd)
 	if err != nil {
 		return errors.New(err.Error() + "\r\n Information: command " + clearPfeStatisticCommamd)
 	}

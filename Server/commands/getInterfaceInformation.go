@@ -15,7 +15,6 @@ import (
 
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
@@ -28,19 +27,13 @@ const (
 )
 
 // LoadInterfaceInfo returns information about interface with name is interfaceName in router by address (possible nil)
-func LoadInterfaceInfo(sm *sessions.SessionsManager, address string, interfaceName string) (models.IRouterStatistics, error) {
+func LoadInterfaceInfo(address string, interfaceName string) (models.IRouterStatistics, error) {
 	commandDescription := "command loadInterfaceInfo address: " + address + " interfaceName: " + interfaceName
 	lspLogger.Infoln(commandDescription)
 
 	var request = fmt.Sprintf(requestPattern, interfaceName)
 
-	session, err := sm.GetSession(address)
-	if err != nil {
-		lspLogger.Error(err, request)
-		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
-	}
-
-	reply, err := utils.MakeNetconfRequest(session, request)
+	reply, err := utils.SshSessionManager.DoNetconfRequest(address, request)
 	if err != nil {
 		lspLogger.Error(err, request)
 		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
@@ -55,19 +48,13 @@ func LoadInterfaceInfo(sm *sessions.SessionsManager, address string, interfaceNa
 }
 
 // LoadAggregateInterfaceInfo returns information about agregate interface with name is interfaceName in router by address (possible nil)
-func LoadAggregateInterfaceInfo(sm *sessions.SessionsManager, address string, interfaceName string) (models.IRouterStatistics, error) {
+func LoadAggregateInterfaceInfo(address string, interfaceName string) (models.IRouterStatistics, error) {
 	commandDescription := "command loadAggregateInterfaceInfo address: " + address + " interfaceName: " + interfaceName
 	lspLogger.Infoln(commandDescription)
 
 	var request = fmt.Sprintf(requestPattern, interfaceName)
 
-	session, err := sm.GetSession(address)
-	if err != nil {
-		lspLogger.Error(err, request)
-		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
-	}
-
-	reply, err := utils.MakeNetconfRequest(session, request)
+	reply, err := utils.SshSessionManager.DoNetconfRequest(address, request)
 	if err != nil {
 		lspLogger.Error(err, request)
 		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
@@ -76,17 +63,17 @@ func LoadAggregateInterfaceInfo(sm *sessions.SessionsManager, address string, in
 
 	subInterfaceNames := result.GetSubInterfaceNames()
 
-	result.SubInterface, err = getSubInterfaceInfo(sm, address, subInterfaceNames)
+	result.SubInterface, err = getSubInterfaceInfo(address, subInterfaceNames)
 
 	utils.ConvertToJson(result)
 	return result, err
 }
 
-func getSubInterfaceInfo(sm *sessions.SessionsManager, address string, subInterfaceNames []string) ([]models.InterfaceInformation, error) {
+func getSubInterfaceInfo(address string, subInterfaceNames []string) ([]models.InterfaceInformation, error) {
 	result := make([]models.InterfaceInformation, len(subInterfaceNames))
 	for index, logicalName := range subInterfaceNames {
 		subInterfaceName := strings.TrimSpace(utils.GetPhysicalName(logicalName))
-		interfaceInfo, err := LoadInterfaceInfo(sm, address, subInterfaceName)
+		interfaceInfo, err := LoadInterfaceInfo(address, subInterfaceName)
 		if err != nil {
 			lspLogger.Error(err)
 			return nil, err

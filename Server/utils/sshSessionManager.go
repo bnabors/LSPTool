@@ -9,6 +9,7 @@ package utils
 
 import (
 	"bytes"
+	"errors"
 	"strings"
 	"sync"
 	"time"
@@ -16,6 +17,9 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
+
+	"github.com/Juniper/go-netconf/netconf"
+
 	"golang.org/x/crypto/ssh"
 )
 
@@ -24,7 +28,14 @@ type (
 	SSHSessionManager struct {
 		routerSSHClients map[string]*ssh.Client
 		mu               sync.Mutex
+
+		sessions map[string]*netconf.Session
+		mutex    sync.Mutex
 	}
+)
+
+var (
+	SshSessionManager = NewSSHSessionManager()
 )
 
 func (sm SSHSessionManager) getClientOnRouter(router models.Router) (*ssh.Client, error) {
@@ -85,6 +96,9 @@ func NewSSHSessionManager() SSHSessionManager {
 	return SSHSessionManager{
 		routerSSHClients: map[string]*ssh.Client{},
 		mu:               sync.Mutex{},
+
+		sessions: map[string]*netconf.Session{},
+		mutex:    sync.Mutex{},
 	}
 }
 
@@ -108,4 +122,87 @@ func (sm SSHSessionManager) tryRunSSHCommand(router models.Router, command strin
 		return "", err
 	}
 	return b.String(), nil
+}
+
+func (sm SSHSessionManager) GetSession(address string) (session *netconf.Session, err error) {
+	if sm.sessions == nil {
+		sm.sessions = map[string]*netconf.Session{}
+	}
+
+	session, ok := sm.sessions[address]
+	if ok {
+		lspLogger.Infoln("ssh session is already open: " + address)
+		return
+	}
+
+	session, err = CreateSession(address)
+
+	if session != nil {
+		sm.sessions[address] = session
+		lspLogger.Infoln("create ssh session: " + address)
+	}
+
+	return
+}
+
+func (sm SSHSessionManager) CloseSession(address string) {
+	session, ok := sm.sessions[address]
+
+	if !ok {
+		return
+	}
+
+	if session != nil {
+		session.Close()
+	}
+
+	delete(sm.sessions, address)
+
+	lspLogger.Infoln("close ssh session: " + address)
+}
+
+func CreateSession(address string) (*netconf.Session, error) {
+	user, password := config.LspConfig.User, config.LspConfig.Password
+
+	var timeout = time.Duration(config.LspConfig.SSHConnectionTimout) * time.Second
+
+	var finalAddress = ""
+	if config.LspConfig.UseProxy {
+		finalAddress = address
+	} else if strings.Contains(address, ":") {
+		finalAddress = address
+	} else {
+		finalAddress = address + ":22"
+	}
+
+	session, err := netconf.DialSSHTimeout(finalAddress, netconf.SSHConfigPassword(user, password), timeout)
+
+	return session, err
+}
+
+func (sm SSHSessionManager) DoNetconfRequest(address string, request string) (*netconf.RPCReply, error) {
+
+	sm.mutex.Lock()
+	defer sm.mutex.Unlock()
+
+	//first try
+	result, err := sm.tryDoNetconfRequest(address, request)
+	if err == nil {
+		return result, nil
+	}
+
+	sm.CloseSession(address)
+
+	//second try with error
+	return sm.tryDoNetconfRequest(address, request)
+}
+
+func (sm SSHSessionManager) tryDoNetconfRequest(address string, request string) (*netconf.RPCReply, error) {
+	session, err := sm.GetSession(address)
+	if err != nil {
+		lspLogger.Error(err, request)
+		return nil, errors.New(err.Error() + "\r\n Information: " + request)
+	}
+
+	return session.Exec(netconf.RawMethod(request))
 }

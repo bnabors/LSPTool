@@ -13,11 +13,10 @@ import (
 
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
-func LoadRouteInfo(sm *sessions.SessionsManager, address string, destination string, table string) (models.RouteInformation, error) {
+func LoadRouteInfo(address string, destination string, table string) (models.RouteInformation, error) {
 	var requestPattern = `<get-route-information>
 	<destination>%s</destination>
 	<table>%s</table>
@@ -28,13 +27,7 @@ func LoadRouteInfo(sm *sessions.SessionsManager, address string, destination str
 
 	var request = fmt.Sprintf(requestPattern, destination, table)
 
-	session, err := sm.GetSession(address)
-	if err != nil {
-		lspLogger.Error(err, request)
-		return models.RouteInformation{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
-	}
-
-	reply, err := utils.MakeNetconfRequest(session, request)
+	reply, err := utils.SshSessionManager.DoNetconfRequest(address, request)
 	if err != nil {
 		lspLogger.Error(err, request)
 		return models.RouteInformation{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)

@@ -24,14 +24,7 @@ func LoadMplsLspInfo(ingressAddress string, egressAddress string) ([]models.Mpls
 	commandDescription := "command loadMplsLspInfo ingressAddress: " + ingressAddress + " egressAddress: " + egressAddress
 	lspLogger.Infoln(commandDescription)
 
-	session, err := utils.CreateSession(ingressAddress)
-	if err != nil {
-		lspLogger.Error(err, request)
-		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
-	}
-	defer session.Close()
-
-	reply, err := utils.MakeNetconfRequest(session, request)
+	reply, err := utils.SshSessionManager.DoNetconfRequest(ingressAddress, request)
 	if err != nil {
 		lspLogger.Error(err, request)
 		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)

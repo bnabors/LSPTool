@@ -14,7 +14,6 @@ import (
 
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/commands"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/sessions"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
@@ -22,7 +21,6 @@ type TestResultBuilder struct {
 	AllRouters       []*models.Router
 	GroupTestResults []*GroupTestResult
 	LspGroups        []*models.LspGroup
-	SessionsManager  sessions.SessionsManager
 }
 
 func (trb *TestResultBuilder) Init(lspGroups []*models.LspGroup) {
@@ -32,11 +30,6 @@ func (trb *TestResultBuilder) Init(lspGroups []*models.LspGroup) {
 	trb.LspGroups = lspGroups
 
 	trb.GroupTestResults = []*GroupTestResult{}
-	trb.SessionsManager = sessions.SessionsManager{}
-}
-
-func (trb *TestResultBuilder) Dispose() {
-	trb.SessionsManager.CloseAllSessions()
 }
 
 func (trb *TestResultBuilder) TryRunTest(lspItem models.LspItem) error {
@@ -83,7 +76,8 @@ func (trb *TestResultBuilder) TryRunTest(lspItem models.LspItem) error {
 	}
 
 	testResult.BuildDiagrammResult()
-	testResult.BuildIcmpResult(&trb.SessionsManager)
+	testResult.BuildIcmpResult()
+
 	return nil
 }
 
@@ -249,7 +243,7 @@ func (trb *TestResultBuilder) runLinkDirectTests(currentIp string, nextIp string
 	result.LogicalInterfaceName = interfaceName
 	result.InterfaceInfo = interfaceInfo
 
-	nextRouter, err := command.GetOspfNeighbor(&trb.SessionsManager, currentIp, interfaceName)
+	nextRouter, err := command.GetOspfNeighbor(currentIp, interfaceName)
 	if err != nil {
 		return
 	}
@@ -266,7 +260,7 @@ func (trb *TestResultBuilder) runLinkDirectTests(currentIp string, nextIp string
 }
 
 func (trb *TestResultBuilder) getInterfaceInfo(fromIp string, toIp string) (destination string, interfaceName string, interfaceInfo models.IRouterStatistics, err error) {
-	routeInfo, err := command.LoadRouteInfo(&trb.SessionsManager, fromIp, toIp, "inet.0")
+	routeInfo, err := command.LoadRouteInfo(fromIp, toIp, "inet.0")
 	if err != nil {
 		return
 	}
@@ -277,9 +271,9 @@ func (trb *TestResultBuilder) getInterfaceInfo(fromIp string, toIp string) (dest
 	var physicalInterfaceName = utils.GetPhysicalName(interfaceName)
 
 	if strings.Index(interfaceName, "ae") == 0 {
-		interfaceInfo, err = command.LoadAggregateInterfaceInfo(&trb.SessionsManager, fromIp, physicalInterfaceName)
+		interfaceInfo, err = command.LoadAggregateInterfaceInfo(fromIp, physicalInterfaceName)
 	} else {
-		interfaceInfo, err = command.LoadInterfaceInfo(&trb.SessionsManager, fromIp, physicalInterfaceName)
+		interfaceInfo, err = command.LoadInterfaceInfo(fromIp, physicalInterfaceName)
 	}
 
 	return
