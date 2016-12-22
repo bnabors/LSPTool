@@ -74,6 +74,16 @@ type QueueCounterInfo struct {
 	TotalDropPackets string `xml:"queue-counters-total-drop-packets"`
 }
 
+type LogicalInterface struct {
+	AddressFamilies      []AddressFamily `xml:"address-family"`
+	LogicalInterfaceName string          `xml:"name"`
+}
+
+type AddressFamily struct {
+	AddressFamilyName string `xml:"address-family-name"`
+	LocalIp           string `xml:"interface-address>ifa-local"`
+}
+
 func (obj InterfaceInformation) ToRouterStatisticsContent(router *Router) RouterStatisticsContent {
 	var statistics = []*Statistics{}
 
@@ -161,7 +171,21 @@ func (obj InterfaceInformation) GetTrafficStatistics() TrafficStatistics {
 }
 
 func (obj InterfaceInformation) GetLocalIp(logicalInterfaceName string) string {
-	return GetLocalIp(obj.LogicalInterfaces, logicalInterfaceName)
+	for _, logicalInterface := range obj.LogicalInterfaces {
+		if strings.TrimSpace(logicalInterface.LogicalInterfaceName) != strings.TrimSpace(logicalInterfaceName) {
+			continue
+		}
+
+		for _, addresFamily := range logicalInterface.AddressFamilies {
+			if strings.TrimSpace(addresFamily.AddressFamilyName) != "inet" {
+				continue
+			}
+
+			return strings.TrimSpace(addresFamily.LocalIp)
+		}
+	}
+
+	return ""
 }
 
 func ParseInterfaceInformation(xmlText []byte) InterfaceInformation {

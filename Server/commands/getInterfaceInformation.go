@@ -73,7 +73,10 @@ func LoadAggregateInterfaceInfo(sm *sessions.SessionsManager, address string, in
 		return nil, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 	result := models.ParseAgregateInterfaceInformation([]byte(reply.Data))
-	result.SubInterface, err = getSubInterfaceInfo(sm, address, result.SubInterfaceNames)
+
+	subInterfaceNames := result.GetSubInterfaceNames()
+
+	result.SubInterface, err = getSubInterfaceInfo(sm, address, subInterfaceNames)
 
 	utils.ConvertToJson(result)
 	return result, err

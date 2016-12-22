@@ -27,15 +27,15 @@ type (
 		ConfiguredPolicerOutput string   `xml:"logical-interface>policer-output"`
 
 		TrafficStatistics TrafficStatistics `xml:"physical-interface>traffic-statistics"`
-		SubInterfaceNames []string          `xml:"physical-interface>logical-interface>lag-traffic-statistics>lag-link>name"`
-		SubInterface      []InterfaceInformation
-		InputErrors       InputError  `xml:"physical-interface>input-error-list"`
-		OutputErrors      OutputError `xml:"physical-interface>output-error-list"`
+
+		InputErrors  InputError  `xml:"physical-interface>input-error-list"`
+		OutputErrors OutputError `xml:"physical-interface>output-error-list"`
 
 		QueueCounters []QueueCounter `xml:"physical-interface>queue-counters"`
-		//EgressQueueCounter  QueueCounter `xml:"physical-interface>queue-counters"`
 
-		LogicalInterfaces []LogicalInterface `xml:"physical-interface>logical-interface"`
+		LogicalInterfaces []AggregateLogicalnterface `xml:"physical-interface>logical-interface"`
+
+		SubInterface []InterfaceInformation
 	}
 
 	InputError struct {
@@ -62,6 +62,17 @@ type (
 		Name  string `xml:"forwarding-class-name"`
 		Value string `xml:"queue-counters-total-drop-packets"`
 	}
+
+	AggregateLogicalnterface struct {
+		AddressFamilies      []AggregateAddressFamily `xml:"address-family"`
+		LogicalInterfaceName string                   `xml:"name"`
+		SubInterfaceNames    []string                 `xml:"lag-traffic-statistics>lag-link>name"`
+	}
+
+	AggregateAddressFamily struct {
+		AddressFamilyName string `xml:"address-family-name"`
+		LocalIp           string `xml:"interface-address>ifa-local"`
+	}
 )
 
 func ParseAgregateInterfaceInformation(xmlText []byte) AgregateInterfaceInformation {
@@ -84,8 +95,7 @@ func ParseAgregateInterfaceInformation(xmlText []byte) AgregateInterfaceInformat
 			InputPacketsPerSecond:  "None",
 			OutputPacketsPerSecond: "None",
 		},
-		SubInterfaceNames: []string{},
-		SubInterface:      []InterfaceInformation{},
+		SubInterface: []InterfaceInformation{},
 		InputErrors: InputError{
 			Errors:           "None",
 			Drops:            "None",
@@ -208,5 +218,35 @@ func (obj AgregateInterfaceInformation) GetTrafficStatistics() TrafficStatistics
 }
 
 func (obj AgregateInterfaceInformation) GetLocalIp(logicalInterfaceName string) string {
-	return GetLocalIp(obj.LogicalInterfaces, logicalInterfaceName)
+	for _, logicalInterface := range obj.LogicalInterfaces {
+		if strings.TrimSpace(logicalInterface.LogicalInterfaceName) != strings.TrimSpace(logicalInterfaceName) {
+			continue
+		}
+
+		for _, addresFamily := range logicalInterface.AddressFamilies {
+			if strings.TrimSpace(addresFamily.AddressFamilyName) != "inet" {
+				continue
+			}
+
+			return strings.TrimSpace(addresFamily.LocalIp)
+		}
+	}
+
+	return ""
+}
+
+func (obj AgregateInterfaceInformation) GetSubInterfaceNames() []string {
+	result := []string{}
+
+	for _, logicalInterface := range obj.LogicalInterfaces {
+		if logicalInterface.SubInterfaceNames == nil {
+			continue
+		}
+
+		for _, subInterfaceName := range logicalInterface.SubInterfaceNames {
+			result = append(result, subInterfaceName)
+		}
+	}
+
+	return result
 }
