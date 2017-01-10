@@ -126,7 +126,7 @@ div.lps-content {
 
 div.table-header-div{
     font-size: 18px;
-    margin: 0 0 0 4px !important;
+    margin: 0 0 0 10px !important;
 }
 
 div.lps-content div {
@@ -204,7 +204,12 @@ a.selected {
 }
 
 div.lsps-tab-routers {
-    width: 37%;
+    width: 40%;
+    margin: 0px !important;
+}
+
+div.lsps-tab-routers table {
+    padding: 0px -0px 0 14px;
 }
 
 div.lsps-tab-routers table * {
@@ -217,8 +222,13 @@ label.lsps-tab-label {
 }
 
 div.lsps-tab-bands {
-    width: 59%;
+    width: 60%;
+    margin: 0px !important;
 }
+div.lsps-tab-bands table {
+    padding: 0 10px;
+}
+
 div.lsps-tab-bands table * {
     font-size: 12px;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
