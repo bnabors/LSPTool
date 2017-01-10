@@ -28185,7 +28185,8 @@
 	  if (value == null) {
 	    return value === undefined ? undefinedTag : nullTag;
 	  }
-	  return (symToStringTag && symToStringTag in Object(value))
+	  value = Object(value);
+	  return (symToStringTag && symToStringTag in value)
 	    ? getRawTag(value)
 	    : objectToString(value);
 	}
