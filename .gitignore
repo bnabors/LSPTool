@@ -1,3 +1,11 @@
 Server/Server
 Server/service.log
 /Client/node_modules
+/Client/.idea/.name
+/Client/.idea/Client.iml
+/Client/.idea/encodings.xml
+/Client/.idea/misc.xml
+/Client/.idea/modules.xml
+/Client/.idea/vcs.xml
+/Client/.idea/workspace.xml
+/Server/Server.exe

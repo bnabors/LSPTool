@@ -13,6 +13,8 @@
     "sshConnectionTimout": 60,
 	"pingCount": 100,
 	"pingSize": 1000,
-    "pingLossPercentThreshold": 50,
-    "pingAvgThreshold": 7.0
+    "pingLossPercentThreshold": 10,
+    "pingAvgThreshold": 100.0,
+	"pingMaxThreshold": 200.0,
+	"pingSTDDevThreshold": 5.0
 }

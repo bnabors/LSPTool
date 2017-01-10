@@ -33,6 +33,8 @@ type (
 		PingSize                 int      `json:"pingSize"`
 		PingLossPercentThreshold int      `json:"pingLossPercentThreshold"`
 		PingAvgThreshold         float64  `json:"pingAvgThreshold"`
+		PingMaxThreshold         float64  `json:"pingMaxThreshold"`
+		PingSTDDevThreshold      float64  `json:"pingSTDDevThreshold"`
 	}
 )
 
