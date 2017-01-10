@@ -104,14 +104,21 @@ func RunTests(o models.TestOptions) (*models.TestResults, error) {
 	return &routeResults, nil
 }
 
-func GetLspItemTestResult(lspItem models.LspItem, lspGroups []*models.LspGroup) (*models.RouteResult, error) {
+func GetLspItemTestResult(lspItem models.LspItem, lspCollection models.LspCollection, lspGroups []*models.LspGroup) (*models.RouteResult, error) {
 	builder := controllerHelper.TestResultBuilder{}
 	builder.Init(lspGroups)
 
 	if err := builder.TryRunTest(lspItem); err != nil {
 		return nil, err
 	}
-	builder.AddLspBand(lspItem)
+
+	for _, testLsp := range lspCollection.P2P {
+		builder.AddLspBand(*testLsp)
+	}
+
+	for _, testLsp := range lspCollection.P2MP {
+		builder.AddLspBand(*testLsp)
+	}
 
 	return builder.GetRouteResult(lspItem), nil
 }
