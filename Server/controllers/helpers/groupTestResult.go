@@ -150,7 +150,7 @@ func getAdresses(rtDestination string, addressLeft string, addressRight string) 
 	destinationBack = strings.Join(octetsLeft[div:], ".")
 	destination = strings.Join(octetsRight[div:], ".")
 
-	if div > 0 {
+	if div > 0 && div < 4 {
 		destinationBack = "." + destinationBack
 		destination = "." + destination
 	}
