@@ -38,7 +38,5 @@ func Ping(icmpInfo *models.IcmpInfo) (models.PingResult, error) {
 		return models.PingResult{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
 
-	lspLogger.Debug(reply.Data)
-
 	return models.ParsePing([]byte(reply.Data)), nil
 }

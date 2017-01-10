@@ -30,7 +30,14 @@ func RefreshLsp(requestModel models.RequestModel, oldLspGroups []*models.LspGrou
 		return nil, errors.New("LSP has been changed. Please determine LSPs again.")
 	}
 
-	return GetLspItemTestResult(requestModel.LspItem, oldLspGroups)
+	routeResult, err := GetLspItemTestResult(requestModel.LspItem, lspCollections, oldLspGroups)
+	if err != nil {
+		return nil, err
+	}
+
+	routeResult.Names = requestModel.LspNames
+
+	return routeResult, nil
 }
 
 func isLspChanged(newLspCollection models.LspCollection, oldLsp *models.LspItem, oldLspNames []string, oldLspGroups []*models.LspGroup) bool {

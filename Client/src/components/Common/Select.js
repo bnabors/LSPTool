@@ -5,7 +5,7 @@
  * Unless required by applicable law or otherwise agreed to in writing by the parties, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-//import "./select.css"
+import "./select.css"
 import "react-select/dist/react-select.css"
 
 import React from "react"
