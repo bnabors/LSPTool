@@ -13,25 +13,23 @@ import (
 )
 
 // BuildIcmpResult make icmp result between two routers
-func BuildIcmpResult(routerLeft models.Router, routerRight models.Router) (models.IcmpResult, error) {
-	var pingResult, err = command.Ping(routerLeft, routerRight)
+func BuildIcmpResult(icmpInfo *models.IcmpInfo) (models.IcmpResult, error) {
+	var pingResult, err = command.Ping(icmpInfo)
 	if err != nil {
 		return models.IcmpResult{}, err
 	}
-	return pingResult.ToIcmpResult(routerLeft, routerRight), nil
+	return pingResult.ToIcmpResult(icmpInfo), nil
 }
 
 // BuildIcmpResultByRouters make icmp results by route
-func BuildIcmpResultByRouters(optionsId string, routers []*models.Router) (models.TestResult, error) {
+func BuildIcmpResultByRouters(optionsId string, icmpInfos []*models.IcmpInfo) (models.TestResult, error) {
 	content := []*models.IcmpResult{}
 
 	isError := false
-	for index := 1; index < len(routers); index++ {
 
-		var routerLeft = routers[index-1]
-		var routerRight = routers[index]
+	for _, icmpInfo := range icmpInfos {
 
-		var icmpResult, err = BuildIcmpResult(*routerLeft, *routerRight)
+		var icmpResult, err = BuildIcmpResult(icmpInfo)
 		if err != nil {
 			return models.TestResult{}, err
 		}

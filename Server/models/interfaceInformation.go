@@ -84,7 +84,7 @@ type AddressFamily struct {
 	LocalIp           string `xml:"interface-address>ifa-local"`
 }
 
-func (obj InterfaceInformation) ToRouterStatisticsContent(router *Router) RouterStatisticsContent {
+func (obj InterfaceInformation) ToRouterStatisticsContent() RouterStatisticsContent {
 	var statistics = []*Statistics{}
 
 	var rows = []*StatisticsValue{}

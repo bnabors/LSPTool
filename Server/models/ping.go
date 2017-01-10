@@ -119,22 +119,19 @@ func (res PingResult) Print() {
 }
 
 // ToIcmpResult - make models for page view
-func (res PingResult) ToIcmpResult(source Router, destination Router) IcmpResult {
+func (res PingResult) ToIcmpResult(icmpInfo *IcmpInfo) IcmpResult {
 	average := float64(res.RttAverage) / 1000
 	max := float64(res.RttMaximum) / 1000
 	std := float64(res.RttStddev) / 1000
 	isError := false
+
 	return IcmpResult{
-		Id:                "icmp_" + strconv.Itoa(source.Id) + "_" + strconv.Itoa(destination.Id),
-		FromDevice:        source.Name,
-		DestinationDevice: destination.Name,
-		DestinationIp:     destination.Ip,
-		Loss:              IcmpValue{Value: strconv.FormatFloat(float64(res.PacketLoss), 'f', -1, 32) + "%", Error: res.PacketLoss > config.LspConfig.PingLossPercentThreshold},
-		Max:               IcmpValue{Value: strconv.FormatFloat(float64(max), 'f', -1, 32), Error: max > config.LspConfig.PingMaxThreshold},
-		Average:           IcmpValue{Value: strconv.FormatFloat(float64(average), 'f', -1, 32), Error: average > config.LspConfig.PingAvgThreshold},
-		StdDev:            IcmpValue{Value: strconv.FormatFloat(float64(std), 'f', -1, 32), Error: std > config.LspConfig.PingSTDDevThreshold},
-		RouterStartId:     strconv.Itoa(source.Id),
-		RouterFinishId:    strconv.Itoa(destination.Id),
-		IsError:           isError,
+		Loss:    IcmpValue{Value: strconv.FormatFloat(float64(res.PacketLoss), 'f', -1, 32) + "%", Error: res.PacketLoss > config.LspConfig.PingLossPercentThreshold},
+		Max:     IcmpValue{Value: strconv.FormatFloat(float64(max), 'f', -1, 32), Error: max > config.LspConfig.PingMaxThreshold},
+		Average: IcmpValue{Value: strconv.FormatFloat(float64(average), 'f', -1, 32), Error: average > config.LspConfig.PingAvgThreshold},
+		StdDev:  IcmpValue{Value: strconv.FormatFloat(float64(std), 'f', -1, 32), Error: std > config.LspConfig.PingSTDDevThreshold},
+		Id:      "icmp_" + strconv.Itoa(icmpInfo.Source.Id) + "_" + strconv.Itoa(icmpInfo.Destination.Id),
+		Info:    icmpInfo,
+		IsError: isError,
 	}
 }

@@ -16,7 +16,6 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/commands"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/controllers/helpers"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
 func RefreshLsp(requestModel models.RequestModel, oldLspGroups []*models.LspGroup) (*models.RouteResult, error) {
@@ -79,7 +78,7 @@ func RefreshInterfaceInfo(router models.Router, interfaceName string) (models.Ro
 	if err != nil {
 		return models.RouterStatisticsContent{}, err
 	}
-	return statistic.ToRouterStatisticsContent(&router), nil
+	return statistic.ToRouterStatisticsContent(), nil
 }
 
 // ClearAndRefreshInterfaceInfo - clear and get updated interface information
@@ -143,7 +142,7 @@ func refreshPfeStatistic(router models.Router) (models.RouterStatisticsContent, 
 		return models.RouterStatisticsContent{}, err
 	}
 
-	return statistic.ToRouterStatisticsContent(&router), nil
+	return statistic.ToRouterStatisticsContent(), nil
 }
 
 // clearAndRefreshPfeStatistic - clear and get updated interface inforamtion
@@ -157,48 +156,10 @@ func clearAndRefreshPfeStatistic(router models.Router) (models.RouterStatisticsC
 
 // RefreshPing get icmp result between two routers
 func RefreshPing(requestModel models.RequestModel, options models.RefreshPingOptions) (models.IcmpResult, error) {
-	var routers, err = utils.GetRoutersFromMysqlByID([]string{options.RouterStartId, options.RouterFinishId})
-
-	if err != nil {
-		return models.IcmpResult{}, err
-	}
-
-	if len(routers) != 2 {
-		return models.IcmpResult{}, errors.New("Need two routers")
-	}
-
-	var routerLeft = routers[0]
-	var routerRight = routers[1]
-
-	return controllerHelper.BuildIcmpResult(*routerLeft, *routerRight)
+	return controllerHelper.BuildIcmpResult(options.Info)
 }
 
 // RefreshPings get icmp results by route
-func RefreshPings(optionsId string, requestModel models.RequestModel) (models.TestResult, error) {
-	var groupRouters *models.LspGroupRouters = nil
-
-	for _, res := range requestModel.LspGroupRouters {
-		if (*res).Id == requestModel.LspItem.GroupId {
-			groupRouters = res
-			break
-		}
-	}
-
-	if groupRouters == nil {
-		return models.TestResult{}, errors.New("Unable to get the router group")
-	}
-
-	var routers = []*models.Router{}
-
-	for _, routerId := range (*groupRouters).RoutersIdList {
-
-		var router, err = utils.GetRouterFromMysqlByID(routerId)
-		if err != nil {
-			return models.TestResult{}, err
-		}
-
-		routers = append(routers, router)
-	}
-
-	return controllerHelper.BuildIcmpResultByRouters(optionsId, routers)
+func RefreshPings(optionsId string, requestModel models.RequestModel, options models.RefreshPingsOptions) (models.TestResult, error) {
+	return controllerHelper.BuildIcmpResultByRouters(optionsId, options.Infos)
 }

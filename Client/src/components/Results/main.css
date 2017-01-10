@@ -84,11 +84,11 @@ ul.tab li a.active div{
     top:0;
     height: 100%;
     background-image: none;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#FF7171), to(#FFA34F));
-    background-image: -webkit-linear-gradient(bottom, #FF7171, #FFA34F);
-    background-image: -moz-linear-gradient(bottom, #FF7171, #FFA34F);
-    background-image: -o-linear-gradient(bottom, #FF7171, #FFA34F);
-    background-image: linear-gradient(to bottom, #FF7171, #FFA34F);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#4F81FF), to(#72DCFE));
+    background-image: -webkit-linear-gradient(bottom, #4F81FF, #72DCFE);
+    background-image: -moz-linear-gradient(bottom, #4F81FF, #72DCFE);
+    background-image: -o-linear-gradient(bottom, #4F81FF, #72DCFE);
+    background-image: linear-gradient(to bottom, #4F81FF, #72DCFE);
 }
 
 ul.tab li a:focus, .border-right {

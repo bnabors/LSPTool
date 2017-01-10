@@ -138,7 +138,7 @@ func ParseAgregateInterfaceInformation(xmlText []byte) AgregateInterfaceInformat
 	return result
 }
 
-func (obj AgregateInterfaceInformation) ToRouterStatisticsContent(router *Router) RouterStatisticsContent {
+func (obj AgregateInterfaceInformation) ToRouterStatisticsContent() RouterStatisticsContent {
 	var statistics = []*Statistics{}
 
 	var rows = []*StatisticsValue{}
@@ -196,7 +196,7 @@ func (obj AgregateInterfaceInformation) ToRouterStatisticsContent(router *Router
 
 	subInterfaces := []*RouterStatisticsContent{}
 	for _, subInterface := range obj.SubInterface {
-		var subInterfaceStatistic = subInterface.ToRouterStatisticsContent(router)
+		var subInterfaceStatistic = subInterface.ToRouterStatisticsContent()
 		subInterfaces = append(subInterfaces, &subInterfaceStatistic)
 	}
 	result := RouterStatisticsContent{

@@ -21,7 +21,7 @@ type PfeStatistic struct {
 	OutputMTU        string
 }
 
-func (stat PfeStatistic) ToRouterStatisticsContent(router *Router) RouterStatisticsContent {
+func (stat PfeStatistic) ToRouterStatisticsContent() RouterStatisticsContent {
 	rows := []*StatisticsValue{}
 	AddErrorRow(&rows, "Timeout", stat.Timeout)
 	AddErrorRow(&rows, "Truncated key", stat.TruncatedKey)

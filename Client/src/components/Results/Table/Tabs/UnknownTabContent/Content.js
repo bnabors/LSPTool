@@ -5,11 +5,9 @@
  * Unless required by applicable law or otherwise agreed to in writing by the parties, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package models
+'use strict';
+import DataContent from "./DataContent"
 
-type IRouterStatistics interface {
-	ToRouterStatisticsContent() RouterStatisticsContent
-	GetName() string
-	GetTrafficStatistics() TrafficStatistics
-	GetLocalIp(logicalInterfaceName string) string
-}
+module.exports = {
+    DataContent: DataContent,
+};

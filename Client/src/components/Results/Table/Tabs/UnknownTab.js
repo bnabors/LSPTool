@@ -5,11 +5,12 @@
  * Unless required by applicable law or otherwise agreed to in writing by the parties, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 
-package models
+import BaseTab from "./BaseTab"
+import React from "react"
+import {DataContent} from "./UnknownTabContent/Content"
 
-type IRouterStatistics interface {
-	ToRouterStatisticsContent() RouterStatisticsContent
-	GetName() string
-	GetTrafficStatistics() TrafficStatistics
-	GetLocalIp(logicalInterfaceName string) string
+export default class UnknownTab extends BaseTab {
+    render(){
+        return (<DataContent data={this.props.data}/>);
+    }
 }

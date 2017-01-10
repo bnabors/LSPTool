@@ -120,13 +120,13 @@ func (trb *TestResultBuilder) GetRouteResult(lspItem models.LspItem) *models.Rou
 
 		var isError = false
 
-		var pfeStatistic = routerPfeStatistic.ToRouterStatisticsContent(&router)
+		var pfeStatistic = routerPfeStatistic.ToRouterStatisticsContent()
 		pfeStatistic.DetectErrors()
 		isError = isError || pfeStatistic.IsError
 		routeTestContent = append(routeTestContent, pfeStatistic)
 
 		if index < len(res.Links) {
-			var routerStatistic = (*res.Links[index]).Forward.InterfaceInfo.ToRouterStatisticsContent(&router)
+			var routerStatistic = (*res.Links[index]).Forward.InterfaceInfo.ToRouterStatisticsContent()
 			routerStatistic.DetectErrors()
 			isError = isError || routerStatistic.IsError
 			routeTestContent = append(routeTestContent, routerStatistic)
