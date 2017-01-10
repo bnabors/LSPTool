@@ -15,6 +15,7 @@ export default class IcmpTable extends React.Component {
     }
 
     refreshAll() {
+
         this.props.onRefreshPings({id: this.props.data.id});
     }
 
@@ -44,11 +45,12 @@ export default class IcmpTable extends React.Component {
                 <tr>
                     <th>From Device</th>
                     <th>Destination Device</th>
+                    <th>Source IP</th>
                     <th>Destination IP</th>
                     <th>Loss</th>
-                    <th>Average</th>
-                    <th>Max</th>
-                    <th>SDT Dev</th>
+                    <th>Average RTT</th>
+                    <th>Max RTT</th>
+                    <th>STD DEV RTT</th>
                     <th className="router-result-buttons">
                         <div className="router-result-buttons">
                             <a id={this.props.data.id} onClick={this.refreshAll.bind(this)}>Refresh All</a>

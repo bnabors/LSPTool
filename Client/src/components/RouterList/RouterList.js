@@ -7,7 +7,7 @@
 
 import "./main.css"
 import React from "react";
-import Select from "../Common/Select"
+import {FilterableSelect} from "../Common/Select"
 
 export default class RouterList extends React.Component {
     constructor(props) {
@@ -54,7 +54,9 @@ export default class RouterList extends React.Component {
     }
 
     selectIngressHandle(event) {
-        let router = this.getRouterById(this.props.ingress_routers, event.target.value);
+        //let router = this.getRouterById(this.props.ingress_routers, event.target.value);
+
+        let router = event ? this.getRouterById(this.props.ingress_routers, event.value) : null;
         this.setState({ingress: router});
 
         if (this.state.egress !== null && router !== null && this.state.egress.id === router.id) {
@@ -64,7 +66,8 @@ export default class RouterList extends React.Component {
     }
 
     selectEgressHandle(event) {
-        let router = this.getRouterById(this.props.egress_routers, event.target.value);
+        //let router = this.getRouterById(this.props.egress_routers, event.target.value);
+        let router = event ? this.getRouterById(this.props.egress_routers, event.value) : null;
         this.setState({egress: router});
 
         if (this.state.ingress !== null && router !== null && this.state.ingress.id === router.id) {
@@ -112,40 +115,46 @@ export default class RouterList extends React.Component {
 
     render() {
         let ingressRouterNodes = this.props.ingress_routers.map(function (router) {
-            return (
+            return { value: router.id, label: router.name };
+            /*(
                 <option id={router.id} value={router.id}>
                     {router.name}
                 </option>
-            )
+            )*/
         }, this);
 
         let egressRouterNodes = this.props.egress_routers.map(function (router) {
-            return (
+            return { value: router.id, label: router.name };
+            /*(
                 <option id={router.id} value={router.id}>
                     {router.name}
                 </option>
-            )
+            )*/
         }, this);
 
         return (
             <div className="routerLst">
                 <div className="text-overflow router-header" title="Ingress and Egress Routers">Ingress and Egress Routers</div>
                 <div className="routers-select-container">
-                    <div className="router-row">
-                        <div>
+                    <div className="router-row ">
+                        <div className="cell">
                             <label className="named margin-bottom10">Ingress</label>
                         </div>
-                        <Select ref="ingress" id="select-ingress" value={this.props.egress}
-                                onChange={this.selectIngressHandle.bind(this)}
-                                disabled={!this.props.isEnabled} content={ingressRouterNodes}/>
+                        <div className="cell w100">
+                            <FilterableSelect ref="ingress" id="select-ingress" value={this.state.ingress}
+                                              onChange={this.selectIngressHandle.bind(this)}
+                                              disabled={!this.props.isEnabled} content={ingressRouterNodes}/>
+                        </div>
                     </div>
                     <div className="router-row">
-                        <div>
+                        <div className="cell">
                             <label className="named">Egress</label>
                         </div>
-                        <Select ref="egress" id="select-egress" value={this.props.egress}
-                                onChange={this.selectEgressHandle.bind(this)}
-                                disabled={!this.props.isEnabled} content={egressRouterNodes}/>
+                        <div className="cell w100">
+                            <FilterableSelect ref="egress" id="select-egress" value={this.state.egress}
+                                              onChange={this.selectEgressHandle.bind(this)}
+                                              disabled={!this.props.isEnabled} content={egressRouterNodes}/>
+                        </div>
                     </div>
                 </div>
                 <div>

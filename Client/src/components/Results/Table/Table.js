@@ -11,6 +11,7 @@ import React from "react";
 import LspsTab from "./Tabs/LspsTab"
 import RouterTab from "./Tabs/RouterTab"
 import IcmpTab from "./Tabs/IcmpTab"
+import UnknownTab from "./Tabs/UnknownTab"
 import HeaderItem from "./HeaderItem"
 import {ResultType} from "../../../constants/resultType"
 
@@ -129,7 +130,7 @@ export default class Table extends React.Component {
                 case ResultType.ICPM:
                     return (<HeaderItem id={item.id} data={item} onClicked={this.selectTab.bind(this)} selectedId={selectedId} />);
                 default:
-                    return (<div>ERROR!</div>)
+                    return (<HeaderItem id={item.id} data={item} onClicked={this.selectTab.bind(this)} selectedId={selectedId} />)
             }
         }, this);
 
@@ -157,7 +158,7 @@ export default class Table extends React.Component {
                                     onStateChanged={this.onStateChanged.bind(this)} commands={this.props.commands}/>);
                     break;
                 default:
-                    tab = (<div>ERROR!</div>);
+                    tab = (<UnknownTab data={this.state.selected} />);
                     break;
             }
         }

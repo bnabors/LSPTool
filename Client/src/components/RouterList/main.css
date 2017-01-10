@@ -11,7 +11,7 @@ div.routerLst {
 }
 
 div.routerLst div {
-    display: block;
+    /*display: block;*/
     margin: 10px 5px;
 }
 
@@ -67,9 +67,14 @@ div.routers-select-container div{
 div.router-row{
     display: table-row !important;
 }
-div.router-row div{
+div.router-row div.cell{
     display: table-cell !important;
 }
+
+div.cell.w100{
+    width: 100%;
+}
+
 
 .margin-bottom10{
     margin-bottom: 10px !important;

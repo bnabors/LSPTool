@@ -57,6 +57,10 @@ export default class Diagram extends React.Component {
         return (<circle cx={x + "px"} cy={y + "px"} r={RADIUS + "px"} className="circle-style"/>)
     }
 
+    static renderCircleText(x, y, label) {
+        return (<text x={x + "px"} y={y + 9 + "px"} className="circle-text-style text-center">{label}</text>)
+    }
+
     static renderTextRouter(x, y, name) {
         return (<text className="text-center" x={x + "px"} y={(y - RADIUS - 2) + "px"}>{name}</text>)
     }
@@ -135,17 +139,17 @@ export default class Diagram extends React.Component {
             case (DIRECTION.DOWN):
                 if (options.nextDirection === DIRECTION.LEFT) {
                     if (text1) {
-                        res.push(Diagram.renderText(options.sx + SHIFT_TEXT, options.sy - SMALL_SHIFT_TEXT, "text-left", text1));
+                        res.push(Diagram.renderText(options.sx + SHIFT_TEXT, options.sy - SMALL_SHIFT_TEXT, "text-left text-decorator-green", text1));
                     }
                     if (text2) {
-                        res.push(Diagram.renderText(options.ex + SHIFT_TEXT, options.ey - SMALL_SHIFT_TEXT, "text-left", text2));
+                        res.push(Diagram.renderText(options.ex + SHIFT_TEXT, options.ey - SMALL_SHIFT_TEXT, "text-left text-decorator-green", text2));
                     }
                 } else {
                     if (text1) {
-                        res.push(Diagram.renderText(options.sx - SHIFT_TEXT, options.sy - SMALL_SHIFT_TEXT, "text-right", text1));
+                        res.push(Diagram.renderText(options.sx - SHIFT_TEXT, options.sy - SMALL_SHIFT_TEXT, "text-right text-decorator-green", text1));
                     }
                     if (text2) {
-                        res.push(Diagram.renderText(options.ex - SHIFT_TEXT, options.ey - SMALL_SHIFT_TEXT, "text-right", text2));
+                        res.push(Diagram.renderText(options.ex - SHIFT_TEXT, options.ey - SMALL_SHIFT_TEXT, "text-right text-decorator-green", text2));
                     }
                 }
                 break;
@@ -321,6 +325,28 @@ export default class Diagram extends React.Component {
         return res
     }
 
+    static rectSummaryLabelRender(x, y, isShort = false) {
+
+        let startX = INITIAL_POSITION_LABEL_X - 2;
+        y += SHIFT_TEXT + SMALL_SHIFT_TEXT;
+
+        let startY = y - SMALL_SHIFT_TEXT - 5;
+
+        let res = [];
+
+        x += isShort === true ? ADDITIONAL_X_LABEL_RIGHT_SHORT: ADDITIONAL_X_LABEL_RIGHT;
+        let width = x;
+        let height = SUMMARY_STEP;
+
+        res.push(<rect x={startX} y={startY} width={width} height={height} className="rect-fill" />);
+
+        y += SUMMARY_STEP + SUMMARY_STEP;
+        startY = y - SMALL_SHIFT_TEXT - 5;
+        res.push(<rect x={startX} y={startY} width={width} height={height} className="rect-fill" />);
+
+        return res
+    }
+
     static caclulateOptions(options, lastId, nextId) {
 
         if (lastId === nextId) {
@@ -396,6 +422,7 @@ export default class Diagram extends React.Component {
         let lastRouterId = undefined;
         let lines = [];
         let res = [];
+        let rectangles = [];
 
         res.push(Diagram.textSummaryLabelRender(INITIAL_POSITION_LABEL_X, INITIAL_POSITION_LABEL_Y, false));
         options.labelYs.push(INITIAL_POSITION_LABEL_Y);
@@ -412,7 +439,9 @@ export default class Diagram extends React.Component {
                 res.push(Diagram.renderTextCenter(options, route.baseIp, "text-decorator-green"));
 
                 res.push(Diagram.renderCircle(options.sx, options.sy));
+                res.push(Diagram.renderCircleText(options.sx, options.sy, i == 0 ? "I": "T"));
                 res.push(Diagram.renderCircle(options.ex, options.ey));
+                res.push(Diagram.renderCircleText(options.ex, options.ey, i + 1 == routes.length ? "E": "T"));
 
                 res.push(Diagram.textRouters(options, route.router1.name, route.router2.name));
                 res.push(Diagram.textIps(options, route.router1.ip, route.router2.ip));
@@ -432,6 +461,7 @@ export default class Diagram extends React.Component {
                     res.push(Diagram.renderTextCenter(options, route.baseIp, "text-decorator-green"));
 
                     res.push(Diagram.renderCircle(options.ex, options.ey));
+                    res.push(Diagram.renderCircleText(options.ex, options.ey, i + 1 == routes.length ? "E": "T"));
 
                     res.push(Diagram.textRouters(options, undefined, route.router2.name));
                     res.push(Diagram.textIps(options, route.router1.ip, route.router2.ip));
@@ -448,6 +478,11 @@ export default class Diagram extends React.Component {
         let maxx = Diagram.maxx;
         for (let i = 0; i < options.labelYs.length; i++) {
             res.push(Diagram.textSummaryLabelRender(maxx, options.labelYs[i], true, routes.length < 3));
+
+            let rects = Diagram.rectSummaryLabelRender(maxx, options.labelYs[i], routes.length < 3);
+            for (let j = 0; j < rects.length; j++) {
+                rectangles.push(rects[j]);
+            }
         }
 
         let sx = Diagram.minx;
@@ -464,6 +499,7 @@ export default class Diagram extends React.Component {
             width: ex + 'px',
         };
 
+        //{rectangles}
         return (<svg className="dia" width={ex + "px"} height={ey + "px"} x="0px" y="0px"
                      style={svgStyle}>{lines}{res}</svg>)
     }
