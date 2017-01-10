@@ -28185,8 +28185,7 @@
 	  if (value == null) {
 	    return value === undefined ? undefinedTag : nullTag;
 	  }
-	  value = Object(value);
-	  return (symToStringTag && symToStringTag in value)
+	  return (symToStringTag && symToStringTag in Object(value))
 	    ? getRawTag(value)
 	    : objectToString(value);
 	}
@@ -47138,49 +47137,48 @@
 	    }, {
 	        key: "render",
 	        value: function render() {
-	            var className = this.props.data.isError ? "error" : "";
 	            return _react2.default.createElement(
 	                "tr",
 	                { id: this.props.data.id },
 	                _react2.default.createElement(
 	                    "td",
-	                    { className: className },
+	                    null,
 	                    this.props.data.icmpInfo.source.name
 	                ),
 	                _react2.default.createElement(
 	                    "td",
-	                    { className: className },
+	                    null,
 	                    this.props.data.icmpInfo.dest.name
 	                ),
 	                _react2.default.createElement(
 	                    "td",
-	                    { className: className },
+	                    null,
 	                    this.props.data.icmpInfo.sourceIp
 	                ),
 	                _react2.default.createElement(
 	                    "td",
-	                    { className: className },
+	                    null,
 	                    this.props.data.icmpInfo.destIp
 	                ),
 	                _react2.default.createElement(
 	                    "td",
-	                    { className: className },
-	                    this.props.data.loss
+	                    { className: this.props.data.loss.error ? "error" : "" },
+	                    this.props.data.loss.value
 	                ),
 	                _react2.default.createElement(
 	                    "td",
-	                    { className: className },
-	                    this.props.data.avg
+	                    { className: this.props.data.avg.error ? "error" : "" },
+	                    this.props.data.avg.value
 	                ),
 	                _react2.default.createElement(
 	                    "td",
-	                    { className: className },
-	                    this.props.data.max
+	                    { className: this.props.data.max.error ? "error" : "" },
+	                    this.props.data.max.value
 	                ),
 	                _react2.default.createElement(
 	                    "td",
-	                    { className: className },
-	                    this.props.data.stdDev
+	                    { className: this.props.data.stdDev.error ? "error" : "" },
+	                    this.props.data.stdDev.value
 	                ),
 	                _react2.default.createElement(
 	                    "td",

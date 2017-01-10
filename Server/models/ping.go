@@ -121,15 +121,17 @@ func (res PingResult) Print() {
 // ToIcmpResult - make models for page view
 func (res PingResult) ToIcmpResult(icmpInfo *IcmpInfo) IcmpResult {
 	average := float64(res.RttAverage) / 1000
-	isError := res.IsError || res.PacketLoss > config.LspConfig.PingLossPercentThreshold || average > config.LspConfig.PingAvgThreshold
+	max := float64(res.RttMaximum) / 1000
+	std := float64(res.RttStddev) / 1000
+	isError := res.PacketLoss > config.LspConfig.PingLossPercentThreshold || max > config.LspConfig.PingMaxThreshold || average > config.LspConfig.PingAvgThreshold || std > config.LspConfig.PingSTDDevThreshold
 
 	return IcmpResult{
+		Loss:    IcmpValue{Value: strconv.FormatFloat(float64(res.PacketLoss), 'f', -1, 32) + "%", Error: res.PacketLoss > config.LspConfig.PingLossPercentThreshold},
+		Max:     IcmpValue{Value: strconv.FormatFloat(float64(max), 'f', -1, 32), Error: max > config.LspConfig.PingMaxThreshold},
+		Average: IcmpValue{Value: strconv.FormatFloat(float64(average), 'f', -1, 32), Error: average > config.LspConfig.PingAvgThreshold},
+		StdDev:  IcmpValue{Value: strconv.FormatFloat(float64(std), 'f', -1, 32), Error: std > config.LspConfig.PingSTDDevThreshold},
 		Id:      "icmp_" + strconv.Itoa(icmpInfo.Source.Id) + "_" + strconv.Itoa(icmpInfo.Destination.Id),
 		Info:    icmpInfo,
-		Loss:    strconv.FormatFloat(float64(res.PacketLoss), 'f', -1, 32) + "%",
-		Max:     strconv.FormatFloat(float64(res.RttMaximum)/1000, 'f', -1, 32),
-		Average: strconv.FormatFloat(average, 'f', -1, 32),
-		StdDev:  strconv.FormatFloat(float64(res.RttStddev)/1000, 'f', -1, 32),
 		IsError: isError,
 	}
 }

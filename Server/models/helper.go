@@ -11,6 +11,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/helpers"
 )
 
 func AddValueRow(rows *[]*StatisticsValue, header string, val string) {
@@ -18,7 +20,7 @@ func AddValueRow(rows *[]*StatisticsValue, header string, val string) {
 }
 
 func AddErrorRow(rows *[]*StatisticsValue, header string, val string) {
-	*rows = append(*rows, &StatisticsValue{Header: header, Value: val, IsError: checkIsError(val)})
+	*rows = append(*rows, &StatisticsValue{Header: header, Value: helpers.ParceNumberAndLocalize(val), IsError: checkIsError(val)})
 }
 
 func AddLastFlappedErrorRow(rows *[]*StatisticsValue, value string) {
