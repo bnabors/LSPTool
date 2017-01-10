@@ -83,13 +83,19 @@ func (gtr *GroupTestResult) BuildDiagrammResult() {
 }
 
 func (gtr *GroupTestResult) BuildIcmpResult() (err error) {
-	var routers = []*models.Router{}
+	var icmpInfos = []*models.IcmpInfo{}
 
-	for _, host := range gtr.Hosts {
-		routers = append(routers, &host.Router)
+	for index := 1; index < len(gtr.Hosts); index++ {
+		var hostStart = *(gtr.Hosts[index-1])
+		var hostFinish = *(gtr.Hosts[index])
+		var link = *(gtr.Links[index-1])
+
+		icmpInfo := models.IcmpInfo{Source: &hostStart.Router, Destination: &hostFinish.Router, InterfaceIpSource: link.Backward.Destination, InterfaceIpDest: link.Forward.Destination}
+
+		icmpInfos = append(icmpInfos, &icmpInfo)
 	}
 
-	gtr.IcmpResult, err = BuildIcmpResultByRouters("icmp_"+gtr.GroupId, routers)
+	gtr.IcmpResult, err = BuildIcmpResultByRouters("icmp_"+gtr.GroupId, icmpInfos)
 	return
 }
 

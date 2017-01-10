@@ -425,7 +425,7 @@ func refreshPingsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	testResult, err := controller.RefreshPings(options.Id, requestModel)
+	testResult, err := controller.RefreshPings(options.Id, requestModel, options)
 	if err != nil {
 		sendErrorResponse(w, err.Error())
 		return

@@ -24,13 +24,15 @@ import (
 )
 
 type (
-	// SSHSessionManager - type of session manager for pfe statistics
-	SSHSessionManager struct {
-		routerSSHClients map[string]*ssh.Client
-		mu               sync.Mutex
+	SSHRouterSession struct {
+		address        string
+		sshClient      *ssh.Client
+		netconfSession *netconf.Session
+		mutex          sync.Mutex
+	}
 
-		sessions map[string]*netconf.Session
-		mutex    sync.Mutex
+	SSHSessionManager struct {
+		routerSessions map[string]*SSHRouterSession
 	}
 )
 
@@ -38,77 +40,82 @@ var (
 	SshSessionManager = NewSSHSessionManager()
 )
 
-func (sm SSHSessionManager) getClientOnRouter(router models.Router) (*ssh.Client, error) {
-	client, hasClient := sm.routerSSHClients[router.Ip]
-	if hasClient {
-		return client, nil
+func NewSSHSessionManager() SSHSessionManager {
+	return SSHSessionManager{
+		routerSessions: map[string]*SSHRouterSession{},
 	}
-	return sm.createSSHClientOnRouter(router)
 }
 
-func (sm SSHSessionManager) createSSHClientOnRouter(router models.Router) (*ssh.Client, error) {
-	cfg := &ssh.ClientConfig{
-		User: config.LspConfig.User,
-		Auth: []ssh.AuthMethod{
-			ssh.Password(config.LspConfig.Password),
-		},
-		Timeout: time.Duration(config.LspConfig.SSHConnectionTimout) * time.Second,
-	}
+func (sm *SSHSessionManager) RunSSHCommand(router models.Router, command string) (string, error) {
 	address := router.GetAddress()
+	session := sm.getSession(address)
 
-	var finalAddress = ""
-	if config.LspConfig.UseProxy {
-		finalAddress = address
-	} else if strings.Contains(address, ":") {
-		finalAddress = address
-	} else {
-		finalAddress = address + ":22"
-	}
-
-	client, err := ssh.Dial("tcp", finalAddress, cfg)
-	if err != nil {
-		lspLogger.Errorf("SshCommand Error: %v", err)
-		return nil, err
-	}
-
-	sm.routerSSHClients[router.Ip] = client
-	return client, nil
-}
-
-// RunSSHCommand - try get or open session on router and run command
-func (sm SSHSessionManager) RunSSHCommand(router models.Router, command string) (string, error) {
-	sm.mu.Lock()
-	defer sm.mu.Unlock()
+	session.mutex.Lock()
+	defer session.mutex.Unlock()
 
 	//first try remove client
-	result, err := sm.tryRunSSHCommand(router, command)
+	result, err := session.tryRunSSHCommand(command)
 	if err == nil {
 		return result, nil
 	}
 
-	delete(sm.routerSSHClients, router.Ip)
+	session.closeSSHClient()
+
+	lspLogger.Infoln("second try executing command : " + command)
 
 	//second try with error
-	return sm.tryRunSSHCommand(router, command)
+	return session.tryRunSSHCommand(command)
 }
 
-func NewSSHSessionManager() SSHSessionManager {
-	return SSHSessionManager{
-		routerSSHClients: map[string]*ssh.Client{},
-		mu:               sync.Mutex{},
+func (sm *SSHSessionManager) DoNetconfRequest(address string, request string) (*netconf.RPCReply, error) {
+	session := sm.getSession(address)
 
-		sessions: map[string]*netconf.Session{},
-		mutex:    sync.Mutex{},
+	session.mutex.Lock()
+	defer session.mutex.Unlock()
+
+	//first try
+	result, err := session.tryDoNetconfRequest(request)
+	if err == nil {
+		return result, nil
 	}
+
+	session.closeNetconfSession()
+
+	lspLogger.Infoln("second try executing request : " + request)
+
+	//second try with error
+	return session.tryDoNetconfRequest(request)
 }
 
-func (sm SSHSessionManager) tryRunSSHCommand(router models.Router, command string) (string, error) {
-	client, err := sm.getClientOnRouter(router)
-	if err != nil {
-		return "", err
+func (sm *SSHSessionManager) getSession(address string) *SSHRouterSession {
+	session, hasSession := sm.routerSessions[address]
+	if hasSession {
+		return session
 	}
 
-	session, err := client.NewSession()
+	newSession := SSHRouterSession{address: address, mutex: sync.Mutex{}}
+	sm.routerSessions[address] = &newSession
+
+	return &newSession
+}
+
+func (rs *SSHRouterSession) tryRunSSHCommand(command string) (string, error) {
+	if rs.sshClient == nil {
+		err := rs.createSSHClient()
+		if err != nil {
+			return "", err
+		}
+
+		lspLogger.Infoln("create ssh client: " + rs.address)
+	} else {
+		lspLogger.Infoln("ssh client is already open: " + rs.address)
+	}
+
+	if rs.sshClient == nil {
+		return "", errors.New("ssh client opening failed: " + rs.address)
+	}
+
+	session, err := rs.sshClient.NewSession()
 	if err != nil {
 		lspLogger.Errorf("SshCommand Error: %v", err)
 		return "", err
@@ -124,85 +131,92 @@ func (sm SSHSessionManager) tryRunSSHCommand(router models.Router, command strin
 	return b.String(), nil
 }
 
-func (sm SSHSessionManager) GetSession(address string) (session *netconf.Session, err error) {
-	if sm.sessions == nil {
-		sm.sessions = map[string]*netconf.Session{}
+func (rs *SSHRouterSession) tryDoNetconfRequest(request string) (*netconf.RPCReply, error) {
+	if rs.netconfSession == nil {
+		err := rs.createNetconfSession()
+		if err != nil {
+			return nil, err
+		}
+
+		lspLogger.Infoln("create netconf session: " + rs.address)
+	} else {
+		lspLogger.Infoln("netconf session is already open: " + rs.address)
 	}
 
-	session, ok := sm.sessions[address]
-	if ok {
-		lspLogger.Infoln("ssh session is already open: " + address)
-		return
+	if rs.netconfSession == nil {
+		return nil, errors.New("netconf session opening failed: " + rs.address)
 	}
 
-	session, err = CreateSession(address)
-
-	if session != nil {
-		sm.sessions[address] = session
-		lspLogger.Infoln("create ssh session: " + address)
-	}
-
-	return
+	return rs.netconfSession.Exec(netconf.RawMethod(request))
 }
 
-func (sm SSHSessionManager) CloseSession(address string) {
-	session, ok := sm.sessions[address]
-
-	if !ok {
-		return
+func (rs *SSHRouterSession) createSSHClient() error {
+	cfg := &ssh.ClientConfig{
+		User: config.LspConfig.User,
+		Auth: []ssh.AuthMethod{
+			ssh.Password(config.LspConfig.Password),
+		},
+		Timeout: time.Duration(config.LspConfig.SSHConnectionTimout) * time.Second,
 	}
 
-	if session != nil {
-		session.Close()
+	var finalAddress = ""
+	if config.LspConfig.UseProxy {
+		finalAddress = rs.address
+	} else if strings.Contains(rs.address, ":") {
+		finalAddress = rs.address
+	} else {
+		finalAddress = rs.address + ":22"
 	}
 
-	delete(sm.sessions, address)
+	client, err := ssh.Dial("tcp", finalAddress, cfg)
+	if err != nil {
+		lspLogger.Errorf("SshCommand Error: %v", err)
+		return err
+	}
 
-	lspLogger.Infoln("close ssh session: " + address)
+	rs.sshClient = client
+
+	return nil
 }
 
-func CreateSession(address string) (*netconf.Session, error) {
+func (rs *SSHRouterSession) createNetconfSession() error {
 	user, password := config.LspConfig.User, config.LspConfig.Password
 
 	var timeout = time.Duration(config.LspConfig.SSHConnectionTimout) * time.Second
 
 	var finalAddress = ""
 	if config.LspConfig.UseProxy {
-		finalAddress = address
-	} else if strings.Contains(address, ":") {
-		finalAddress = address
+		finalAddress = rs.address
+	} else if strings.Contains(rs.address, ":") {
+		finalAddress = rs.address
 	} else {
-		finalAddress = address + ":22"
+		finalAddress = rs.address + ":22"
 	}
 
 	session, err := netconf.DialSSHTimeout(finalAddress, netconf.SSHConfigPassword(user, password), timeout)
-
-	return session, err
-}
-
-func (sm SSHSessionManager) DoNetconfRequest(address string, request string) (*netconf.RPCReply, error) {
-
-	sm.mutex.Lock()
-	defer sm.mutex.Unlock()
-
-	//first try
-	result, err := sm.tryDoNetconfRequest(address, request)
-	if err == nil {
-		return result, nil
-	}
-
-	sm.CloseSession(address)
-
-	//second try with error
-	return sm.tryDoNetconfRequest(address, request)
-}
-
-func (sm SSHSessionManager) tryDoNetconfRequest(address string, request string) (*netconf.RPCReply, error) {
-	session, err := sm.GetSession(address)
 	if err != nil {
-		lspLogger.Error(err, request)
-		return nil, errors.New(err.Error() + "\r\n Information: " + request)
+		lspLogger.Errorf("Netconf Error: %v", err)
+		return err
 	}
 
-	return session.Exec(netconf.RawMethod(request))
+	rs.netconfSession = session
+
+	return nil
+}
+
+func (rs *SSHRouterSession) closeSSHClient() {
+	if rs.sshClient != nil {
+		rs.sshClient = nil
+	}
+
+	lspLogger.Infoln("close ssh client: " + rs.address)
+}
+
+func (rs *SSHRouterSession) closeNetconfSession() {
+	if rs.netconfSession != nil {
+		rs.netconfSession.Close()
+		rs.netconfSession = nil
+	}
+
+	lspLogger.Infoln("close netconf session: " + rs.address)
 }

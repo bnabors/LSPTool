@@ -17,7 +17,7 @@ import (
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
 )
 
-func Ping(source models.Router, host models.Router) (models.PingResult, error) {
+func Ping(icmpInfo *models.IcmpInfo) (models.PingResult, error) {
 
 	var requestPattern = `<ping>
 	<count>%d</count> 
@@ -27,16 +27,18 @@ func Ping(source models.Router, host models.Router) (models.PingResult, error) {
 	<host>%s</host> 
 </ping>`
 
-	var request = fmt.Sprintf(requestPattern, config.LspConfig.PingCount, config.LspConfig.PingSize, source.Ip, host.Ip)
+	var request = fmt.Sprintf(requestPattern, config.LspConfig.PingCount, config.LspConfig.PingSize, icmpInfo.InterfaceIpSource, icmpInfo.InterfaceIpDest)
 
-	commandDescription := "command ping from: " + source.Name + " to: " + host.Name + " request: " + request
+	commandDescription := "command ping from: " + icmpInfo.Source.Name + " to: " + icmpInfo.Destination.Name + " request: " + request
 	lspLogger.Infoln(commandDescription)
 
-	reply, err := utils.SshSessionManager.DoNetconfRequest(source.GetAddress(), request)
+	reply, err := utils.SshSessionManager.DoNetconfRequest(icmpInfo.Source.GetAddress(), request)
 	if err != nil {
 		lspLogger.Error(err, request)
 		return models.PingResult{}, errors.New(err.Error() + "\r\n Information: " + commandDescription)
 	}
+
+	lspLogger.Debug(reply.Data)
 
 	return models.ParsePing([]byte(reply.Data)), nil
 }

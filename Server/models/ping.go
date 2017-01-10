@@ -119,20 +119,17 @@ func (res PingResult) Print() {
 }
 
 // ToIcmpResult - make models for page view
-func (res PingResult) ToIcmpResult(source Router, destination Router) IcmpResult {
+func (res PingResult) ToIcmpResult(icmpInfo *IcmpInfo) IcmpResult {
 	average := float64(res.RttAverage) / 1000
 	isError := res.IsError || res.PacketLoss > config.LspConfig.PingLossPercentThreshold || average > config.LspConfig.PingAvgThreshold
+
 	return IcmpResult{
-		Id:                "icmp_" + strconv.Itoa(source.Id) + "_" + strconv.Itoa(destination.Id),
-		FromDevice:        source.Name,
-		DestinationDevice: destination.Name,
-		DestinationIp:     destination.Ip,
-		Loss:              strconv.FormatFloat(float64(res.PacketLoss), 'f', -1, 32) + "%",
-		Max:               strconv.FormatFloat(float64(res.RttMaximum)/1000, 'f', -1, 32),
-		Average:           strconv.FormatFloat(average, 'f', -1, 32),
-		StdDev:            strconv.FormatFloat(float64(res.RttStddev)/1000, 'f', -1, 32),
-		RouterStartId:     strconv.Itoa(source.Id),
-		RouterFinishId:    strconv.Itoa(destination.Id),
-		IsError:           isError,
+		Id:      "icmp_" + strconv.Itoa(icmpInfo.Source.Id) + "_" + strconv.Itoa(icmpInfo.Destination.Id),
+		Info:    icmpInfo,
+		Loss:    strconv.FormatFloat(float64(res.PacketLoss), 'f', -1, 32) + "%",
+		Max:     strconv.FormatFloat(float64(res.RttMaximum)/1000, 'f', -1, 32),
+		Average: strconv.FormatFloat(average, 'f', -1, 32),
+		StdDev:  strconv.FormatFloat(float64(res.RttStddev)/1000, 'f', -1, 32),
+		IsError: isError,
 	}
 }

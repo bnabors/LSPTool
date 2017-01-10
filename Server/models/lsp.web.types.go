@@ -145,18 +145,21 @@ type DiagramResult struct {
 	Paths []*DiaPath `json:"paths"`
 }
 
+type IcmpInfo struct {
+	Source            *Router `json:"source"`
+	Destination       *Router `json:"dest"`
+	InterfaceIpSource string  `json:"sourceIp"`
+	InterfaceIpDest   string  `json:"destIp"`
+}
+
 type IcmpResult struct {
-	Id                string `json:"id"`
-	FromDevice        string `json:"fromDevice"`
-	DestinationDevice string `json:"destDevice"`
-	DestinationIp     string `json:"destIp"`
-	Loss              string `json:"loss"`
-	Max               string `json:"max"`
-	Average           string `json:"avg"`
-	StdDev            string `json:"stdDev"`
-	RouterStartId     string `json:"routerStartId"`
-	RouterFinishId    string `json:"routerFinishId"`
-	IsError           bool   `json:"isError"`
+	Id      string    `json:"id"`
+	Info    *IcmpInfo `json:"icmpInfo"`
+	Loss    string    `json:"loss"`
+	Max     string    `json:"max"`
+	Average string    `json:"avg"`
+	StdDev  string    `json:"stdDev"`
+	IsError bool      `json:"isError"`
 }
 type IcmpContent struct {
 	IcmpResults []*IcmpResult `json:"icmps"`
@@ -266,7 +269,8 @@ type RefreshRouterInterfaceResult struct {
 /* Refresh ICMP */
 
 type RefreshPingsOptions struct {
-	Id string `json:"id"`
+	Id    string      `json:"id"`
+	Infos []*IcmpInfo `json:"icmpInfos"`
 }
 type RefreshPingsResult struct {
 	Id      string        `json:"id"`
@@ -274,10 +278,9 @@ type RefreshPingsResult struct {
 }
 
 type RefreshPingOptions struct {
-	Id             string `json:"id"`
-	IcmpId         string `json:"conentId"`
-	RouterStartId  string `json:"routerStartId"`
-	RouterFinishId string `json:"routerFinishId"`
+	Id     string    `json:"id"`
+	IcmpId string    `json:"conentId"`
+	Info   *IcmpInfo `json:"icmpInfo"`
 }
 
 type RefreshPingResult struct {
