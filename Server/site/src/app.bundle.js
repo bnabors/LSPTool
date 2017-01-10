@@ -28185,8 +28185,7 @@
 	  if (value == null) {
 	    return value === undefined ? undefinedTag : nullTag;
 	  }
-	  value = Object(value);
-	  return (symToStringTag && symToStringTag in value)
+	  return (symToStringTag && symToStringTag in Object(value))
 	    ? getRawTag(value)
 	    : objectToString(value);
 	}
@@ -46887,7 +46886,7 @@
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "result-tab-header" },
-	                    "ICMP"
+	                    'ICMP' + this.props.data.description
 	                ),
 	                _react2.default.createElement(
 	                    "div",

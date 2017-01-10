@@ -127,9 +127,9 @@ func (res PingResult) ToIcmpResult(icmpInfo *IcmpInfo) IcmpResult {
 
 	return IcmpResult{
 		Loss:    IcmpValue{Value: strconv.FormatFloat(float64(res.PacketLoss), 'f', -1, 32) + "%", Error: res.PacketLoss > config.LspConfig.PingLossPercentThreshold},
-		Max:     IcmpValue{Value: strconv.FormatFloat(float64(max), 'f', -1, 32), Error: max > config.LspConfig.PingMaxThreshold},
-		Average: IcmpValue{Value: strconv.FormatFloat(float64(average), 'f', -1, 32), Error: average > config.LspConfig.PingAvgThreshold},
-		StdDev:  IcmpValue{Value: strconv.FormatFloat(float64(std), 'f', -1, 32), Error: std > config.LspConfig.PingSTDDevThreshold},
+		Max:     IcmpValue{Value: strconv.FormatFloat(float64(max), 'f', -1, 32) + "ms", Error: max > config.LspConfig.PingMaxThreshold},
+		Average: IcmpValue{Value: strconv.FormatFloat(float64(average), 'f', -1, 32) + "ms", Error: average > config.LspConfig.PingAvgThreshold},
+		StdDev:  IcmpValue{Value: strconv.FormatFloat(float64(std), 'f', -1, 32) + "ms", Error: std > config.LspConfig.PingSTDDevThreshold},
 		Id:      "icmp_" + strconv.Itoa(icmpInfo.Source.Id) + "_" + strconv.Itoa(icmpInfo.Destination.Id),
 		Info:    icmpInfo,
 		IsError: isError,

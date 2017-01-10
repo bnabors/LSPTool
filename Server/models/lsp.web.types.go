@@ -104,11 +104,12 @@ type LspContent struct {
 }
 
 type TestResult struct {
-	Id      string      `json:"id"`
-	Name    string      `json:"name"`
-	Type    byte        `json:"type"`
-	Content interface{} `json:"content"`
-	IsError bool        `json:"isError"`
+	Id          string      `json:"id"`
+	Name        string      `json:"name"`
+	Description string      `json:"description"`
+	Type        byte        `json:"type"`
+	Content     interface{} `json:"content"`
+	IsError     bool        `json:"isError"`
 }
 
 type RouteResult struct {
