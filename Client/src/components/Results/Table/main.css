@@ -30,6 +30,10 @@
     margin: 10px;
 }
 
+.icmp-tab table {
+    word-break: break-all;
+}
+
 .icmp-tab table * {
     font-size: 12px;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
