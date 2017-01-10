@@ -14,13 +14,18 @@ export default class IcmpTab extends BaseTab {
         this.props.commands.refreshPing({
             id: this.props.data.id,
             contentId: options.contentId,
-            routerStartId: options.routerStartId,
-            routerFinishId: options.routerFinishId
+            icmpInfo: options.icmpInfo,
         });
     }
 
     refreshAll() {
-        this.props.commands.refreshPings({id: this.props.data.id});
+        let infos = [];
+        if(this.props.data && this.props.data.content) {
+            for (let i = 0; i < this.props.data.content.length; i++) {
+                infos.push(this.props.data.content[i].icmpInfo)
+            }
+        }
+        this.props.commands.refreshPings({id: this.props.data.id, icmpInfos: infos});
     }
 
     render() {

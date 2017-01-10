@@ -33,6 +33,16 @@ export default class HeaderItem extends React.Component {
     }
 
     render() {
+        if(!this.props.data || this.props.data == null) {
+            return (
+            <li>
+                <a ref="test" className="tablinks error" onClick={this.clickHandler.bind(this)} title="Unknown result type">
+                    <span className="error">Unknown result type</span>
+                    <div/>
+                </a>
+            </li>)
+        }
+
         let className = "tablinks" + (this.props.data.isError ? " error" : " no-error");
         return (
             <li>

@@ -21,7 +21,13 @@ svg.dia *{
 .circle-style {
     stroke: #a9a9a9;
     stroke-width: 2;
-    fill: transparent;
+    fill: #72dcfe;
+}
+
+.circle-text-style {
+    fill: #FFFFFF;
+    font-size: 26px !important;
+    font-weight: bold;
 }
 
 .text-bold {
@@ -34,7 +40,7 @@ svg.dia *{
 }
 
 .text-decorator-green {
-    /* fill: green;*/
+     fill: #00B08F;
 }
 
 .text-left {
@@ -46,5 +52,9 @@ svg.dia *{
 }
 
 .text-label {
-    fill: #a9a9a9;
+    fill: #A9A9A9;
+}
+
+.rect-fill{
+    fill: #D8D8D8;
 }

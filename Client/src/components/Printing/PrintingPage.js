@@ -48,7 +48,8 @@ export default class PrintingPage extends React.Component {
                 let win = this.openWindow('', this.getTitle(), 'scrollbars=yes,resizable=yes,menubar=yes,location=yes', false);
                 if (win) {
                     win.document.open();
-                    win.document.write('<html><head><title>Print</title>' +
+                    let header= this.getTitle();
+                    win.document.write('<html><head><title>'+header+'</title>' +
                         '<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />' +
                         '<link rel="stylesheet" type="text/css" href="/src/app.bundle.css"></head><body>');
                     win.document.write(element.innerHTML);
@@ -76,10 +77,12 @@ export default class PrintingPage extends React.Component {
 
     getTitle() {
         if(this.props.printing.data !== null){
-            return this.props.printing.data.lsp.name + Date.now().toString();
+            return this.props.LSPs.routers.ingress.name + " - " + this.props.LSPs.routers.egress.name + " - " + new Date().toLocaleString();
+            //return this.props.printing.data.lsp.name + Date.now().toString();
         }
         if(this.props.printing.content !== null) {
-            return this.props.printing.content.name + Date.now().toString();
+            return this.props.LSPs.routers.ingress.name + " - " + this.props.LSPs.routers.egress.name + " - " + new Date().toLocaleString();
+            //return this.props.printing.content.name + Date.now().toString();
         }
 
         return Date.now().toString();
