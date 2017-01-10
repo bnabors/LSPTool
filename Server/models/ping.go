@@ -123,7 +123,7 @@ func (res PingResult) ToIcmpResult(icmpInfo *IcmpInfo) IcmpResult {
 	average := float64(res.RttAverage) / 1000
 	max := float64(res.RttMaximum) / 1000
 	std := float64(res.RttStddev) / 1000
-	isError := false
+	isError := res.PacketLoss > config.LspConfig.PingLossPercentThreshold || max > config.LspConfig.PingMaxThreshold || average > config.LspConfig.PingAvgThreshold || std > config.LspConfig.PingSTDDevThreshold
 
 	return IcmpResult{
 		Loss:    IcmpValue{Value: strconv.FormatFloat(float64(res.PacketLoss), 'f', -1, 32) + "%", Error: res.PacketLoss > config.LspConfig.PingLossPercentThreshold},
