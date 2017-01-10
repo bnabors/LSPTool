@@ -46880,7 +46880,7 @@
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "result-tab-header" },
-	                    "ICMP"
+	                    'ICMP' + this.props.data.description
 	                ),
 	                _react2.default.createElement(
 	                    "div",

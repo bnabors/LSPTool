@@ -8,7 +8,11 @@
 package controllerHelper
 
 import (
+	"strconv"
+
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/commands"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
+	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/helpers"
 	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
 )
 
@@ -39,11 +43,12 @@ func BuildIcmpResultByRouters(optionsId string, icmpInfos []*models.IcmpInfo) (m
 	}
 
 	result := models.TestResult{
-		Id:      optionsId,
-		Name:    "ICMP",
-		Type:    3,
-		IsError: isError,
-		Content: content}
+		Id:          optionsId,
+		Name:        "ICMP",
+		Description: " - each ping test is " + strconv.Itoa(config.LspConfig.PingCount) + " count at " + helpers.ParceNumberAndLocalize(strconv.Itoa(config.LspConfig.PingSize)) + " bytes",
+		Type:        3,
+		IsError:     isError,
+		Content:     content}
 
 	return result, nil
 }
