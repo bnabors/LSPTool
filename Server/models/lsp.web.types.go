@@ -153,14 +153,23 @@ type IcmpInfo struct {
 }
 
 type IcmpResult struct {
-	Id      string    `json:"id"`
-	Info    *IcmpInfo `json:"icmpInfo"`
-	Loss    string    `json:"loss"`
-	Max     string    `json:"max"`
-	Average string    `json:"avg"`
-	StdDev  string    `json:"stdDev"`
-	IsError bool      `json:"isError"`
+	Id                string    `json:"id"`
+	FromDevice        string    `json:"fromDevice"`
+	DestinationDevice string    `json:"destDevice"`
+	DestinationIp     string    `json:"destIp"`
+	Loss              IcmpValue `json:"loss"`
+	Max               IcmpValue `json:"max"`
+	Average           IcmpValue `json:"avg"`
+	StdDev            IcmpValue `json:"stdDev"`
+	Info              *IcmpInfo `json:"icmpInfo"`
+	IsError           bool      `json:"isError"`
 }
+
+type IcmpValue struct {
+	Value string `json:"value"`
+	Error bool   `json:"error"`
+}
+
 type IcmpContent struct {
 	IcmpResults []*IcmpResult `json:"icmps"`
 	IsError     bool

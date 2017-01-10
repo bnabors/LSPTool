@@ -16,17 +16,16 @@ export default class IcmpTableRow extends React.Component {
     }
 
     render() {
-        let className = this.props.data.isError ? "error" : "";
         return (
             <tr id={this.props.data.id}>
-                <td className={className}>{this.props.data.icmpInfo.source.name}</td>
-                <td className={className}>{this.props.data.icmpInfo.dest.name}</td>
-                <td className={className}>{this.props.data.icmpInfo.sourceIp}</td>
-                <td className={className}>{this.props.data.icmpInfo.destIp}</td>
-                <td className={className}>{this.props.data.loss}</td>
-                <td className={className}>{this.props.data.avg}</td>
-                <td className={className}>{this.props.data.max}</td>
-                <td className={className}>{this.props.data.stdDev}</td>
+                <td>{this.props.data.icmpInfo.source.name}</td>
+                <td>{this.props.data.icmpInfo.dest.name}</td>
+                <td>{this.props.data.icmpInfo.sourceIp}</td>
+                <td>{this.props.data.icmpInfo.destIp}</td>
+                <td className={this.props.data.loss.error ? "error" : ""}>{this.props.data.loss.value}</td>
+                <td className={this.props.data.avg.error ? "error" : ""}>{this.props.data.avg.value}</td>
+                <td className={this.props.data.max.error ? "error" : ""}>{this.props.data.max.value}</td>
+                <td className={this.props.data.stdDev.error ? "error" : ""}>{this.props.data.stdDev.value}</td>
                 <td>
                     <div className="router-result-buttons">
                         <a id={this.props.data.id} onClick={this.refreshRow.bind(this)}>Refresh</a>
