@@ -6,12 +6,12 @@
  */
 
 'use strict';
-import Diagram from "./Diagram"
+import RouteDiagram from "./RouteDiagram"
 import BandsTable from "./BandsTable"
 import RoutersTable from "./RoutersTable"
 
 module.exports = {
-    Diagram: Diagram,
+    RouteDiagram: RouteDiagram,
     BandsTable: BandsTable,
     RoutersTable: RoutersTable
 };

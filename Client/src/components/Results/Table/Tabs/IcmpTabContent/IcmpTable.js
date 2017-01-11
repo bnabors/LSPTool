@@ -50,7 +50,7 @@ export default class IcmpTable extends React.Component {
                     <th>Loss</th>
                     <th>Average RTT</th>
                     <th>Max RTT</th>
-                    <th>STD DEV RTT</th>
+                    <th>STD DEV</th>
                     <th className="router-result-buttons">
                         <div className="router-result-buttons">
                             <a id={this.props.data.id} onClick={this.refreshAll.bind(this)}>Refresh All</a>

@@ -7,7 +7,7 @@
 
 import "./print-content.css"
 import React from "react";
-import {Diagram, BandsTable, RoutersTable} from "../../Results/Table/Tabs/LspTabContent/Content"
+import {RouteDiagram, BandsTable, RoutersTable} from "../../Results/Table/Tabs/LspTabContent/Content"
 
 export default class LspsContent extends React.Component {
     render() {
@@ -15,7 +15,7 @@ export default class LspsContent extends React.Component {
             <div className="print-block">
                 <div className="block-header">LSPs Diagram</div>
                 <div className="block-body">
-                    <Diagram data={this.props.data.content.diagram}/>
+                    <RouteDiagram data={this.props.data.content.diagram}/>
                 </div>
                 <div className="block-header">LSPs</div>
                 <div className="block-body">

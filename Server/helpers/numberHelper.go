@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
+	_ "github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
 	"github.com/dustin/go-humanize"
 )
 

@@ -7,7 +7,7 @@
 
 import BaseTab from "./BaseTab"
 import React from "react"
-import {Diagram, BandsTable, RoutersTable} from "./LspTabContent/Content"
+import {RouteDiagram, BandsTable, RoutersTable} from "./LspTabContent/Content"
 
 export default class LspsTab extends BaseTab {
     clicked(routerId) {
@@ -29,7 +29,7 @@ export default class LspsTab extends BaseTab {
                         </div>
                     </div>
                     <div className="dia-wrapper">
-                        <Diagram data={this.props.data.content.diagram}/>
+                        <RouteDiagram data={this.props.data.content.diagram}/>
                     </div>
                 </div>
                 <div className="lps-content">
