@@ -14,7 +14,7 @@
 	"pingCount": 100,
 	"pingSize": 1000,
     "pingLossPercentThreshold": 10,
-    "pingAvgThreshold": 100.0,
-	"pingMaxThreshold": 200.0,
+    "pingAvgThreshold": 50.0,
+	"pingMaxThreshold": 100.0,
 	"pingSTDDevThreshold": 5.0
 }
