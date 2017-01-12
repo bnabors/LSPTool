@@ -16,7 +16,7 @@
   "egressRouterNames": [
     "CORJ",
     "EDGJ",
-    "AGRJ",
+    "AGRJ"
   ],
   "sshConnectionTimout": 60,
   "pingCount": 100,
