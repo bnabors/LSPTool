@@ -9,3 +9,4 @@ Server/service.log
 /Client/.idea/vcs.xml
 /Client/.idea/workspace.xml
 /Server/Server.exe
+.idea/*
