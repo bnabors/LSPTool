@@ -8,7 +8,7 @@
 package models
 
 import (
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
+	"github.com/WOWLABS/LSPTool/Server/config"
 )
 
 /* Main page */

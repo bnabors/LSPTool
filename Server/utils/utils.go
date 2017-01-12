@@ -12,16 +12,14 @@ import (
 	"database/sql"
 	"encoding/json"
 	"encoding/xml"
+	"errors"
 	"io/ioutil"
 	"os"
 	"strings"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-
-	"errors"
-
+	"github.com/WOWLABS/LSPTool/Server/config"
+	"github.com/WOWLABS/LSPTool/Server/log"
+	"github.com/WOWLABS/LSPTool/Server/models"
 	_ "github.com/go-sql-driver/mysql"
 )
 

@@ -10,10 +10,10 @@ package controller
 import (
 	"strings"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
+	"github.com/WOWLABS/LSPTool/Server/config"
+	"github.com/WOWLABS/LSPTool/Server/log"
+	"github.com/WOWLABS/LSPTool/Server/models"
+	"github.com/WOWLABS/LSPTool/Server/utils"
 )
 
 func GetRouters() (*models.RouterContainer, error) {

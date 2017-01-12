@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
+	"github.com/WOWLABS/LSPTool/Server/models"
 )
 
 type HostTestResult struct {

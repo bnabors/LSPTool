@@ -10,9 +10,9 @@ package command
 import (
 	"errors"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
+	"github.com/WOWLABS/LSPTool/Server/log"
+	"github.com/WOWLABS/LSPTool/Server/models"
+	"github.com/WOWLABS/LSPTool/Server/utils"
 )
 
 func GetOspfNeighbor(address string, interfaceName string) (*models.OspfNeighbor, error) {

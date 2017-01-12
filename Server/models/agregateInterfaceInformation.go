@@ -9,11 +9,10 @@ package models
 
 import (
 	"encoding/xml"
-
 	"strings"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/helpers"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
+	"github.com/WOWLABS/LSPTool/Server/helpers"
+	"github.com/WOWLABS/LSPTool/Server/log"
 )
 
 type (

@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
+	"github.com/WOWLABS/LSPTool/Server/log"
 )
 
 type (

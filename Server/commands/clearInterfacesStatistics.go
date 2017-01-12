@@ -8,12 +8,11 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 
-	"errors"
-
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/utils"
+	"github.com/WOWLABS/LSPTool/Server/log"
+	"github.com/WOWLABS/LSPTool/Server/utils"
 )
 
 func ClearInterfacesStatistics(address string, interfaceName string) error {

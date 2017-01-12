@@ -8,8 +8,8 @@
 package main
 
 import (
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/config"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/log"
+	"github.com/WOWLABS/LSPTool/Server/config"
+	"github.com/WOWLABS/LSPTool/Server/log"
 )
 
 func main() {

@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/helpers"
+	"github.com/WOWLABS/LSPTool/Server/helpers"
 )
 
 func AddValueRow(rows *[]*StatisticsValue, header string, val string) {

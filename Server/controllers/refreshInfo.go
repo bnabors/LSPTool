@@ -8,14 +8,13 @@
 package controller
 
 import (
+	"errors"
 	"strconv"
 	"strings"
 
-	"errors"
-
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/commands"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/controllers/helpers"
-	"github.com/Juniper/24287_WOW_LSP_GOLANG/Server/models"
+	"github.com/WOWLABS/LSPTool/Server/commands"
+	"github.com/WOWLABS/LSPTool/Server/controllers/helpers"
+	"github.com/WOWLABS/LSPTool/Server/models"
 )
 
 func RefreshLsp(requestModel models.RequestModel, oldLspGroups []*models.LspGroup) (*models.RouteResult, error) {
